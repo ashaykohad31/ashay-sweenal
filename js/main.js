@@ -14,18 +14,60 @@ if (invite) {
 
 function openInvite() {
   const root = document.documentElement;
-  if (root.classList.contains("invite-open")) return;
+  if (root.classList.contains("invite-open") || invite.classList.contains("is-loading")) return;
   root.classList.add("invite-open");
   if (readMusicState() !== "off") playMusic();
   pageParts.forEach((el) => (el.inert = false));
   setTimeout(() => (invite.hidden = true), reduceMotion ? 600 : 2200);
 }
 
+// Smooth start: the doors wait (up to 4 seconds) for the fonts and the Ganesh ji photo, then the
+// gallery photos and the music are fetched quietly, so nothing hitches when the doors open
+const ganeshPhoto = document.querySelector(".ganesh-medallion img");
+const criticalAssets = Promise.all([document.fonts.ready, ganeshPhoto.decode().catch(() => {})]);
+
+Promise.race([criticalAssets, new Promise((resolve) => setTimeout(resolve, 4000))]).then(() => {
+  if (invite) {
+    invite.classList.remove("is-loading");
+    invite.querySelector(".invite-hint").textContent = "Tap to open";
+  }
+  const warmUp = () => {
+    document.querySelectorAll(".moment img, .memory img, .couple-portrait img").forEach((img) => {
+      new Image().src = img.currentSrc || img.src;
+    });
+    document.getElementById("music").preload = "auto";
+  };
+  if ("requestIdleCallback" in window) requestIdleCallback(warmUp);
+  else setTimeout(warmUp, 500);
+});
+
+// photos fade in as they arrive instead of popping in
+document.querySelectorAll(".moment img, .memory img, .couple-portrait img").forEach((img) => {
+  const show = () => img.classList.add("is-loaded");
+  if (img.complete) show();
+  else img.addEventListener("load", show, { once: true });
+});
+
 // Music: starts when the seal is tapped (browsers need a tap first); the corner button mutes it,
 // and the choice and position carry over to the other page
 const music = document.getElementById("music");
 const musicToggle = document.getElementById("music-toggle");
-music.volume = 0.6;
+const musicLevel = 0.6;
+let musicGain = null;
+music.volume = musicLevel;
+// iPhones ignore audio.volume (it always reads back 1), so there the level is set with a Web Audio gain instead
+const volumeIsLocked = Math.abs(music.volume - musicLevel) > 0.01;
+
+function capMusicVolume() {
+  if (!volumeIsLocked || musicGain) return;
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) return;
+  const context = new AudioContextClass();
+  const gain = context.createGain();
+  gain.gain.value = musicLevel;
+  context.createMediaElementSource(music).connect(gain).connect(context.destination);
+  musicGain = context;
+}
 
 function readMusicState() {
   try {
@@ -50,6 +92,8 @@ function showMusicState(playing) {
 }
 
 function playMusic() {
+  capMusicVolume();
+  if (musicGain) musicGain.resume();
   music
     .play()
     .then(() => {
@@ -183,6 +227,7 @@ scratch.addEventListener("keydown", (event) => {
 
 // Countdown to the date in data-target (the plain page counts to the wedding, the events page to the first event; IST is UTC+5:30)
 const weddingStart = new Date(document.getElementById("countdown").dataset.target);
+const weddingEnd = new Date(document.getElementById("countdown").dataset.end);
 
 const cd = {
   days: document.getElementById("cd-days"),
@@ -209,8 +254,11 @@ function updateCountdown() {
   setUnit(cd.secs, pad(Math.floor(diff / 1000) % 60));
 
   if (diff === 0) {
-    document.getElementById("countdown").textContent = "The celebrations have begun!";
-    clearInterval(countdownTimer);
+    const over = Date.now() >= weddingEnd;
+    document.getElementById("countdown").textContent = over
+      ? "Thank you for celebrating with us!"
+      : "The celebrations have begun!";
+    if (over) clearInterval(countdownTimer);
   }
 }
 
@@ -442,7 +490,13 @@ if (document.getElementById("lightbox")) {
       media.textContent = item.dataset.caption;
     }
 
-    lightboxMedia.replaceChildren(media);
+    // fetch the neighbouring photos now so swiping feels instant
+  [currentMemory - 1, currentMemory + 1].forEach((n) => {
+    const near = memories[(n + memories.length) % memories.length];
+    if (near.dataset.full) new Image().src = near.dataset.full;
+  });
+
+  lightboxMedia.replaceChildren(media);
     lightboxCaption.textContent = item.dataset.caption || "";
     lightboxCount.textContent = `${currentMemory + 1} / ${memories.length}`;
     lightboxMedia.style.setProperty("--from", `${direction * 35}deg`);
@@ -535,5 +589,64 @@ if (!reduceMotion) {
   document.addEventListener("pointerdown", (e) => {
     if (e.target.closest(".scratch")) return;
     for (let i = 0; i < 9; i++) sparkle(e.clientX, e.clientY, 60, 12);
+  });
+}
+
+// Add to calendar: the .ics file is built right in the browser, nothing is sent anywhere
+const calendarButton = document.getElementById("add-calendar");
+const shareButton = document.getElementById("share-invite");
+const shareNote = document.getElementById("share-note");
+let noteTimer;
+
+function showNote(message) {
+  shareNote.textContent = message;
+  clearTimeout(noteTimer);
+  noteTimer = setTimeout(() => (shareNote.textContent = ""), 3500);
+}
+
+if (calendarButton) {
+  calendarButton.addEventListener("click", () => {
+    const stamp = new Date().toISOString().replace(/[-:]|\.\d{3}/g, "");
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Sweenal and Ashay//Wedding//EN",
+      "BEGIN:VEVENT",
+      "UID:wedding-2026-12-13@sweenal-ashay",
+      `DTSTAMP:${stamp}`,
+      "DTSTART:20261213T121500Z", // 5:45 PM IST
+      "SUMMARY:Sweenal & Ashay's Wedding",
+      "LOCATION:Queen's Land Celebration Lawn & Banquet\\, Nagpur\\, Maharashtra",
+      "DESCRIPTION:Varmala & Wedding. Dress code: lehenga · formal or Jodhpuri.",
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\r\n");
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
+    link.download = "sweenal-ashay-wedding.ics";
+    link.click();
+    URL.revokeObjectURL(link.href);
+    showNote("Opening your calendar…");
+  });
+}
+
+// Share: the phone's share sheet where there is one, otherwise copy the link
+if (shareButton) {
+  shareButton.addEventListener("click", async () => {
+    const data = {
+      title: "Sweenal & Ashay's Wedding",
+      text: "Sweenal & Ashay are getting married on 13 December 2026. You are invited!",
+      url: location.href.split("#")[0],
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(data);
+      } else {
+        await navigator.clipboard.writeText(data.url);
+        showNote("Link copied!");
+      }
+    } catch (e) {
+      if (e.name !== "AbortError") showNote("Copy this page's address to share it.");
+    }
   });
 }

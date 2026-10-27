@@ -1,1 +1,4 @@
 .DS_Store
+
+# full-size originals dropped into images/ (the site uses the resized copies in images/story, images/memories and images/portrait.jpg)
+images/*-*-*.JPG

@@ -17,6 +17,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Cinzel:wght@500;600&family=Pinyon+Script&family=Jost:wght@400;500&family=Tiro+Devanagari+Sanskrit&display=swap"
     />
+    <link rel="preload" as="image" href="../images/ganeshji.jpg" />
     <link rel="stylesheet" href="../css/styles.css" />
   </head>
   <body>
@@ -48,7 +49,7 @@
               <canvas class="scratch-canvas" id="scratch-canvas" aria-hidden="true"></canvas>
             </div>
 
-            <div class="countdown" id="countdown" data-target="2026-12-12T09:00:00+05:30" aria-live="polite">
+            <div class="countdown" id="countdown" data-end="2026-12-14T00:00:00+05:30" data-target="2026-12-12T09:00:00+05:30" aria-live="polite">
               <div class="cd-unit"><span id="cd-days">--</span><small>Days</small></div>
               <div class="cd-unit"><span id="cd-hours">--</span><small>Hours</small></div>
               <div class="cd-unit"><span id="cd-mins">--</span><small>Minutes</small></div>
@@ -64,34 +65,51 @@
       <section class="section reveal" id="story">
         <p class="section-eyebrow">How it began</p>
         <h2>Our Story</h2>
-        <p class="section-lead">
-          Write a few lines about how you met — the first conversation, the
-          moment you knew, and the people who cheered you on along the way.
-        </p>
+        <p class="section-lead">A few moments that brought us to this day.</p>
 
         <ol class="timeline" id="timeline">
           <li class="moment">
-            <figure class="photo-placeholder" data-tilt><span>Your photo here</span></figure>
+            <figure class="photo-placeholder" data-tilt>
+              <img src="../images/story/1.jpg" width="600" height="750" loading="lazy" decoding="async"
+                alt="The two of us laughing together at a cafe, with a heart-shaped frame behind us" />
+            </figure>
             <div class="moment-text">
-              <p class="moment-date">Date TBA</p>
-              <h3>How we met</h3>
-              <p>A few lines about the day your paths first crossed.</p>
+              <p class="moment-date"><span class="moment-icon" aria-hidden="true">✉</span> 30 October 2025</p>
+              <h3>A message on Instagram</h3>
+              <p>It all began with a message from Sweenal on Instagram.</p>
             </div>
           </li>
           <li class="moment">
-            <figure class="photo-placeholder" data-tilt><span>Your photo here</span></figure>
+            <figure class="photo-placeholder" data-tilt>
+              <img src="../images/story/2.jpg" width="600" height="750" loading="lazy" decoding="async"
+                alt="A close selfie of the two of us, dressed up and smiling" />
+            </figure>
             <div class="moment-text">
-              <p class="moment-date">Date TBA</p>
-              <h3>A favourite memory</h3>
-              <p>A trip, a first date or a moment you both still laugh about.</p>
+              <p class="moment-date"><span class="moment-icon" aria-hidden="true">☕</span> 12 November 2025</p>
+              <h3>We met in Pune</h3>
+              <p>After talking with our parents, we met for the first time at Bamboo House in Pune.</p>
             </div>
           </li>
           <li class="moment">
-            <figure class="photo-placeholder" data-tilt><span>Your photo here</span></figure>
+            <figure class="photo-placeholder" data-tilt>
+              <img src="../images/story/3.jpg" width="600" height="750" loading="lazy" decoding="async"
+                alt="The two of us in traditional outfits by a tall window" />
+            </figure>
             <div class="moment-text">
-              <p class="moment-date">Date TBA</p>
-              <h3>The proposal</h3>
-              <p>How the question was asked, and how the answer came.</p>
+              <p class="moment-date"><span class="moment-icon" aria-hidden="true">💍</span> 23 January 2026</p>
+              <h3>The engagement</h3>
+              <p>We got engaged, and the journey to forever officially began.</p>
+            </div>
+          </li>
+          <li class="moment">
+            <figure class="photo-placeholder" data-tilt>
+              <img src="../images/story/4.jpg" width="600" height="750" loading="lazy" decoding="async"
+                alt="The two of us hugging on a quiet road lined with palm trees" />
+            </figure>
+            <div class="moment-text">
+              <p class="moment-date"><span class="moment-icon" aria-hidden="true">🍇</span> Our first trip together</p>
+              <h3>Nashik &amp; Sula Wines</h3>
+              <p>Our first journey together took us to Nashik and Sula Wines.</p>
             </div>
           </li>
           <li class="moment moment-final">
@@ -342,7 +360,10 @@
           <div class="info-card" data-tilt>
             <span class="info-icon" aria-hidden="true">🏨</span>
             <h3>Where to stay</h3>
-            <p>Hotel recommendations and room blocks will be shared soon.</p>
+            <p>
+              Stay is available at the venue, Queen's Land. Please reach out to
+              the families (see <a href="#contact">Contact</a>) to arrange it.
+            </p>
           </div>
           <div class="info-card" data-tilt>
             <span class="info-icon" aria-hidden="true">☀</span>
@@ -361,23 +382,25 @@
         <p class="section-lead">Tap a photo to see it up close.</p>
         <div class="carousel">
           <div class="carousel-ring">
-            <button type="button" class="photo-placeholder memory" style="--i: 0" data-caption="Photo 1">
-              <span>Photo 1</span>
+            <button type="button" class="photo-placeholder memory" style="--i: 0" data-caption="Laughing together" data-full="../images/memories/1.jpg">
+              <img src="../images/memories/1-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="A close selfie of the two of us smiling at each other" />
             </button>
-            <button type="button" class="photo-placeholder memory" style="--i: 1" data-caption="Photo 2">
-              <span>Photo 2</span>
+            <button type="button" class="photo-placeholder memory" style="--i: 1" data-caption="Evening in yellow" data-full="../images/memories/2.jpg">
+              <img src="../images/memories/2-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="The two of us sitting together, one in a mustard-yellow suit" />
             </button>
-            <button type="button" class="photo-placeholder memory" style="--i: 2" data-caption="Photo 3">
-              <span>Photo 3</span>
+            <button type="button" class="photo-placeholder memory" style="--i: 2" data-caption="A furry friend" data-full="../images/memories/3.jpg">
+              <img src="../images/memories/3-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="Smiling with a fluffy dog on a cafe sofa" />
             </button>
-            <button type="button" class="photo-placeholder memory" style="--i: 3" data-caption="Photo 4">
-              <span>Photo 4</span>
+            <button type="button" class="photo-placeholder memory" style="--i: 3" data-caption="Elegance in navy" data-full="../images/memories/4.jpg">
+              <img src="../images/memories/4-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="Standing by a window in a navy and gold saree" />
             </button>
-            <button type="button" class="photo-placeholder memory" style="--i: 4" data-caption="Photo 5">
-              <span>Photo 5</span>
-            </button>
-            <button type="button" class="photo-placeholder memory" style="--i: 5" data-caption="Photo 6">
-              <span>Photo 6</span>
+            <button type="button" class="photo-placeholder memory" style="--i: 4" data-caption="Sitting pretty" data-full="../images/memories/5.jpg">
+              <img src="../images/memories/5-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="Seated in a navy saree with gold motifs" />
             </button>
           </div>
         </div>
@@ -409,8 +432,49 @@
           </details>
           <details>
             <summary>Who do I contact with questions?</summary>
-            <p>Contact details will be added here soon.</p>
+            <p>
+              Please call or message our families. Their numbers are in the
+              <a href="#contact">Contact</a> section.
+            </p>
           </details>
+        </div>
+      </section>
+
+      <section class="section section-tinted reveal" id="contact">
+        <p class="section-eyebrow">Get in touch</p>
+        <h2>Contact</h2>
+        <p class="section-lead">Questions about the celebrations, the stay or the way to the venue? Reach out to our families.</p>
+        <div class="info-grid contact-grid">
+          <div class="info-card" data-tilt>
+            <h3>Ganesh Kohad</h3>
+            <p class="contact-role">Father of the groom</p>
+            <p class="contact-number">+91 99706 25637</p>
+            <div class="contact-actions">
+              <a class="btn btn-primary" href="tel:+919970625637">Call</a>
+              <a
+                class="btn btn-whatsapp"
+                href="https://wa.me/919970625637?text=Hello%2C%20I%27m%20writing%20about%20Sweenal%20%26%20Ashay%27s%20wedding."
+                target="_blank"
+                rel="noopener"
+                >WhatsApp</a
+              >
+            </div>
+          </div>
+          <div class="info-card" data-tilt>
+            <h3>Prabhakar Umredkar</h3>
+            <p class="contact-role">Father of the bride</p>
+            <p class="contact-number">+91 77578 85815</p>
+            <div class="contact-actions">
+              <a class="btn btn-primary" href="tel:+917757885815">Call</a>
+              <a
+                class="btn btn-whatsapp"
+                href="https://wa.me/917757885815?text=Hello%2C%20I%27m%20writing%20about%20Sweenal%20%26%20Ashay%27s%20wedding."
+                target="_blank"
+                rel="noopener"
+                >WhatsApp</a
+              >
+            </div>
+          </div>
         </div>
       </section>
     </main>
