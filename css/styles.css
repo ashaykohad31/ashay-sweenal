@@ -503,7 +503,7 @@ html.js:not(.invite-open) {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .ganesh-mantra {
@@ -1753,7 +1753,7 @@ html:has(.lightbox[open]) {
 }
 
 .lightbox-media img {
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .lightbox figcaption {
@@ -1978,8 +1978,12 @@ html:has(.lightbox[open]) {
 }
 
 @media (max-width: 760px) {
+  .hero {
+    padding: 1.5rem 0.625rem 2.5rem;
+  }
+
   .hero-card {
-    padding: 3.5rem 1.25rem 2.75rem;
+    padding: 5rem 1.875rem 2.75rem;
     transform: none;
     transform-style: flat;
   }
@@ -2100,11 +2104,11 @@ html:has(.lightbox[open]) {
 
 @media (max-width: 400px) {
   .hero {
-    padding-inline: 0.75rem;
+    padding-inline: 0.375rem;
   }
 
   .hero-card {
-    padding-inline: 0.75rem;
+    padding-inline: 1.125rem;
   }
 
   .countdown {
