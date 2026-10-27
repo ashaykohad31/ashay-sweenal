@@ -2009,8 +2009,9 @@ html:has(.lightbox[open]) {
     transform: none !important;
   }
 
+  /* the top radius is exactly half the card's width (100vw minus the hero's side padding), so the top is a true semicircle */
   .hero-arch {
-    border-radius: 160px 160px var(--radius) var(--radius);
+    border-radius: calc(50vw - 0.25rem) calc(50vw - 0.25rem) var(--radius) var(--radius);
   }
 
   .cd-unit {
@@ -2117,6 +2118,10 @@ html:has(.lightbox[open]) {
 
   .hero-card {
     padding-inline: 1.375rem;
+  }
+
+  .hero-arch {
+    border-radius: calc(50vw - 0.125rem) calc(50vw - 0.125rem) var(--radius) var(--radius);
   }
 
   .countdown {
