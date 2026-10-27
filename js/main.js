@@ -1,6 +1,23 @@
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(pointer: fine)").matches;
 
+// Opening invitation: tap the seal (or anywhere) and the two flaps swing open
+const invite = document.getElementById("invite");
+const pageParts = document.querySelectorAll(".site-header, main, .site-footer");
+
+pageParts.forEach((el) => (el.inert = true));
+document.getElementById("invite-seal").focus({ preventScroll: true });
+
+function openInvite() {
+  const root = document.documentElement;
+  if (root.classList.contains("invite-open")) return;
+  root.classList.add("invite-open");
+  pageParts.forEach((el) => (el.inert = false));
+  setTimeout(() => (invite.hidden = true), reduceMotion ? 600 : 2000);
+}
+
+invite.addEventListener("click", openInvite);
+
 // Countdown to the first event (12 Dec 2026, Nagpur is IST / UTC+5:30)
 const weddingStart = new Date("2026-12-12T09:00:00+05:30");
 

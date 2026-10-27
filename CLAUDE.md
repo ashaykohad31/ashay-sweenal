@@ -10,7 +10,8 @@ Wedding website for **Sweenal & Ashay**: 12–13 December 2026, Queen's Land Cel
 - `css/styles.css`: all styles, grouped under `/* Section */` comment headers in page order, with `/* Responsive */` at the end
 - `js/main.js`: the countdown (with digit flip), the mobile nav toggle, the hero's canvas petal field, 3D card tilt, the dress-code ladies/gents flip, the story timeline's scroll-drawn line, the Memories lightbox (`<dialog>`, with swipe and arrow keys), and scroll-reveal (IntersectionObserver)
 - `images/outfits/`: `ladies-1…6.jpg` and `gents-1…6.jpg`, cropped from `outfit_code.jpeg` (the couple's wardrobe planner, which is the source of truth for dress codes)
-- Fonts come from Google Fonts: Cormorant Garamond (serif headings), Great Vibes (script accents, such as the `&`) and Jost (body text).
+- Fonts come from Google Fonts: Cormorant Garamond (serif headings), Great Vibes (script accents, such as the `&`) Jost (body text) and Tiro Devanagari Sanskrit (for ॥ श्री गणेशाय नमः ॥).
+- Ganesh ji sits at the top of the hero as a photo (`images/ganeshji.jpg`, resized from the couple's `ganeshji.png`) inside a round cream medallion (`.ganesh-medallion`), because the image has a white background. The current file is a watermarked stock preview, so replace it with a licensed copy before publishing. The top of the hero is where Ganesh ji traditionally appears on a wedding card. Treat it respectfully: keep it at the top and give it its own space, never use it as a casual decoration or at a small size elsewhere, and don't draw text or petals over it.
 
 ## Running locally
 
@@ -28,6 +29,7 @@ python3 -m http.server 8000
 - Each section follows the same heading pattern: `<p class="section-eyebrow">` → `<h2>` → content.
 
 ### 3D and motion
+- **Opening invitation:** the page loads behind a closed card (`#invite`), two flaps with a gold seal. Tapping it adds `invite-open` to `<html>`, which swings the flaps open (`rotateY(±105deg)`) and only then plays the hero entrance. A tiny inline script in `<head>` adds the `js` class, so the overlay never appears (or traps anyone) if JavaScript fails. While the card is closed, the header, main and footer are `inert`.
 - The look is "3D animated": a dark maroon hero with a canvas petal field and a pointer-tilted card, a 3D reveal on each section, tilt-and-glare cards, flip cards in the dress code, and a rotating gallery ring.
 - Make a card tilt by adding `data-tilt`. main.js sets `--rx`/`--ry`/`--gx`/`--gy` on it. Tilt only runs for mouse pointers.
 - In the dress code, `.wardrobe.is-gents` rotates every `.outfit-inner` to its back face. Keep `aria-hidden` on whichever face is hidden; main.js swaps it.

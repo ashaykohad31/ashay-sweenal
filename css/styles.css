@@ -26,6 +26,7 @@
   --swatch-pink: #ec7a9c;
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-script: "Great Vibes", cursive;
+  --font-devanagari: "Tiro Devanagari Sanskrit", "Noto Serif Devanagari", serif;
   --font-sans: "Jost", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --max-width: 1080px;
   --radius: 18px;
@@ -56,6 +57,243 @@ img {
 
 a {
   color: var(--color-accent);
+}
+
+/* Opening invitation: two flaps meet at the centre and swing open on tap */
+
+.invite {
+  display: none;
+}
+
+.js .invite {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  perspective: 1800px;
+  cursor: pointer;
+}
+
+.js .invite[hidden] {
+  display: none;
+}
+
+.js.invite-open .invite {
+  pointer-events: none;
+}
+
+html.js:not(.invite-open) {
+  overflow: hidden;
+}
+
+.invite-flap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 100% 50%, rgba(184, 137, 59, 0.28), transparent 65%),
+    linear-gradient(180deg, var(--color-night-2), var(--color-night));
+  transition:
+    transform 1.6s cubic-bezier(0.65, 0, 0.25, 1),
+    opacity 0.5s 1.25s;
+}
+
+.invite-flap-left {
+  left: 0;
+  transform-origin: 0 50%;
+}
+
+.invite-flap-right {
+  right: 0;
+  transform-origin: 100% 50%;
+  background:
+    radial-gradient(ellipse at 0% 50%, rgba(184, 137, 59, 0.28), transparent 65%),
+    linear-gradient(180deg, var(--color-night-2), var(--color-night));
+}
+
+/* gold frame that runs across both flaps */
+.invite-flap::before {
+  content: "";
+  position: absolute;
+  inset: 14px 0 14px 14px;
+  border: 1px solid rgba(230, 194, 122, 0.5);
+  border-right: 0;
+  border-radius: 10px 0 0 10px;
+}
+
+.invite-flap-right::before {
+  inset: 14px 14px 14px 0;
+  border: 1px solid rgba(230, 194, 122, 0.5);
+  border-left: 0;
+  border-radius: 0 10px 10px 0;
+}
+
+/* shading that deepens as each flap swings towards the viewer */
+.invite-flap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.55));
+  opacity: 0;
+  transition: opacity 1.6s;
+}
+
+.invite-flap-right::after {
+  background: linear-gradient(270deg, transparent, rgba(0, 0, 0, 0.55));
+}
+
+.flap-mandala {
+  --size: min(140vw, 680px);
+  position: absolute;
+  top: 50%;
+  right: calc(var(--size) / -2);
+  width: var(--size);
+  height: var(--size);
+  margin-top: calc(var(--size) / -2);
+  border-radius: 50%;
+  opacity: 0.55;
+  background:
+    radial-gradient(
+      circle,
+      transparent 0 26%,
+      rgba(230, 194, 122, 0.7) 26.3% 26.8%,
+      transparent 27.1% 37%,
+      rgba(230, 194, 122, 0.45) 37.3% 37.7%,
+      transparent 38% 48.6%,
+      rgba(230, 194, 122, 0.6) 48.9% 49.4%,
+      transparent 49.7%
+    ),
+    repeating-conic-gradient(rgba(230, 194, 122, 0.2) 0 2.5deg, transparent 2.5deg 10deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 18%, #000 19% 49.7%, transparent 50%);
+  mask: radial-gradient(circle, transparent 0 18%, #000 19% 49.7%, transparent 50%);
+}
+
+.invite-flap-right .flap-mandala {
+  right: auto;
+  left: calc(var(--size) / -2);
+}
+
+.invite-front {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--color-on-dark);
+  transition: opacity 0.5s, transform 0.6s var(--ease-out);
+}
+
+.invite-eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+}
+
+.invite-names {
+  margin: 0 0 2rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 9vw, 3.6rem);
+  line-height: 1.1;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.invite-names span {
+  font-family: var(--font-script);
+  color: var(--color-gold-light);
+}
+
+.invite-seal {
+  display: grid;
+  place-items: center;
+  grid-auto-flow: column;
+  width: 118px;
+  height: 118px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f8e3a8, var(--color-gold) 55%, #7d5a1f);
+  box-shadow:
+    0 0 0 6px rgba(230, 194, 122, 0.18),
+    0 0 0 7px rgba(230, 194, 122, 0.55),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.3),
+    0 18px 40px rgba(0, 0, 0, 0.55);
+  font-family: var(--font-serif);
+  font-size: 2.3rem;
+  font-weight: 600;
+  color: var(--color-night);
+  cursor: pointer;
+  animation: seal-pulse 2.4s ease-in-out infinite;
+  transition: transform 0.5s var(--ease-out), opacity 0.4s;
+}
+
+.invite-seal span {
+  margin: 0 0.05em;
+  font-family: var(--font-script);
+  font-weight: 400;
+  color: #5e1621;
+}
+
+.invite-seal:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 10px;
+}
+
+.invite-hint {
+  margin: 2rem 0 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(248, 238, 224, 0.75);
+  animation: hint-fade 2.4s ease-in-out infinite;
+}
+
+.invite-open .invite-seal {
+  animation: none;
+  transform: scale(1.35);
+  opacity: 0;
+}
+
+.invite-open .invite-front {
+  opacity: 0;
+  transform: scale(1.08);
+}
+
+.invite-open .invite-flap-left {
+  transform: rotateY(-105deg);
+  opacity: 0;
+}
+
+.invite-open .invite-flap-right {
+  transform: rotateY(105deg);
+  opacity: 0;
+}
+
+.invite-open .invite-flap::after {
+  opacity: 1;
+}
+
+@keyframes seal-pulse {
+  50% {
+    transform: scale(1.06);
+    box-shadow:
+      0 0 0 10px rgba(230, 194, 122, 0.12),
+      0 0 0 11px rgba(230, 194, 122, 0.45),
+      inset 0 -6px 12px rgba(0, 0, 0, 0.3),
+      0 18px 50px rgba(230, 194, 122, 0.35);
+  }
+}
+
+@keyframes hint-fade {
+  50% {
+    opacity: 0.35;
+  }
 }
 
 /* Header */
@@ -179,11 +417,20 @@ a {
 
 .hero-card {
   position: relative;
-  padding: 4.5rem clamp(1.5rem, 6vw, 4.5rem) 3.5rem;
+  padding: 3.25rem clamp(1.5rem, 6vw, 4.5rem) 3.5rem;
   transform-style: preserve-3d;
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.6s var(--ease-out);
   animation: hero-enter 1.6s var(--ease-out) backwards;
+}
+
+.js:not(.invite-open) .hero-card {
+  opacity: 0;
+  animation: none;
+}
+
+.js.invite-open .hero-card {
+  animation: hero-enter 1.6s var(--ease-out) 0.6s backwards;
 }
 
 .hero-card > * {
@@ -214,13 +461,49 @@ a {
   border-radius: inherit;
 }
 
-.rings {
-  position: relative;
-  width: 84px;
-  height: 52px;
-  margin: 0 auto 1rem;
-  transform-style: preserve-3d;
-  transform: translateZ(140px) !important;
+.hero-card > .ganesh {
+  margin: 0 auto 0.75rem;
+  transform: translateZ(120px);
+}
+
+.ganesh-medallion {
+  width: 124px;
+  height: 124px;
+  margin: 0 auto 0.6rem;
+  padding: 6px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 2px var(--color-gold-light),
+    0 0 0 6px rgba(230, 194, 122, 0.18),
+    0 0 0 7px rgba(230, 194, 122, 0.5),
+    0 0 28px rgba(230, 194, 122, 0.45);
+  animation: ganesh-glow 4s ease-in-out infinite;
+}
+
+.ganesh-medallion img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.ganesh-mantra {
+  margin: 0;
+  font-family: var(--font-devanagari);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--color-gold-light);
+}
+
+@keyframes ganesh-glow {
+  50% {
+    box-shadow:
+      0 0 0 2px var(--color-gold-light),
+      0 0 0 6px rgba(230, 194, 122, 0.18),
+      0 0 0 7px rgba(230, 194, 122, 0.5),
+      0 0 44px rgba(230, 194, 122, 0.75);
+  }
 }
 
 .ring {
@@ -312,7 +595,7 @@ a {
 }
 
 .hero-place {
-  margin: 0.25rem 0 2rem;
+  margin: 0.25rem 0 1.5rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-size: 0.85rem;
@@ -323,7 +606,7 @@ a {
   display: flex;
   justify-content: center;
   gap: clamp(0.5rem, 2.5vw, 1.25rem);
-  margin-bottom: 2.25rem;
+  margin-bottom: 1.75rem;
 }
 
 .cd-unit {
@@ -1454,6 +1737,10 @@ html:has(.lightbox[open]) {
   }
 
   .hero-card,
+  .js.invite-open .hero-card,
+  .invite-seal,
+  .invite-hint,
+  .ganesh-medallion,
   .ring,
   .scroll-cue span,
   .cd-unit span.is-flipping {
@@ -1462,6 +1749,15 @@ html:has(.lightbox[open]) {
 
   .outfit-inner {
     transition: none;
+  }
+
+  .invite-flap {
+    transition: opacity 0.5s;
+  }
+
+  .invite-open .invite-flap-left,
+  .invite-open .invite-flap-right {
+    transform: none;
   }
 
   .timeline {
