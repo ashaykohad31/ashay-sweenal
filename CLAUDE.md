@@ -45,6 +45,7 @@ python3 -m http.server 8000
 - **Story timeline:** the four photos are `images/story/1–4.jpg` (600×750, cropped 4:5 so faces sit below the arched top). A new one is a `<figure class="photo-placeholder" data-tilt>` holding an `<img>` (cropped with `object-fit: cover`). Each `.moment` has a date, a title and a line of text.
 - **Memories:** each photo is a `<button class="photo-placeholder memory" data-caption="…" data-full="images/memories/N.jpg">` containing a thumbnail `<img src="images/memories/N-thumb.jpg" alt="…">` (480×600, 4:5). `data-full` is the large version (max 1400px) that the lightbox opens. The 3D ring is built for 5 items at 72° apart; with more photos, change the angle in `.carousel-ring .photo-placeholder` and `--ring-r`.
 - On `/events/` the same paths start with `../`.
+- `images/varmala.png` is the couple's Varmala illustration with a transparent background (cut out from their screenshot, which stays git-ignored). It's used in the Varmala & Wedding event card and at the end of the story.
 - Resize and crop before adding (no EXIF location, thumbnails under ~100 KB). Full-size originals dropped into `images/*.JPG` are git-ignored.
 - **Loading:** the doors show "Loading…" until the fonts and the Ganesh ji photo are ready (4 seconds at most), then main.js quietly fetches the gallery photos and the music. Photos fade in once loaded via `is-loaded`.
 
