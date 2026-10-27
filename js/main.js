@@ -617,7 +617,7 @@ if (calendarButton) {
       "DTSTART:20261213T121500Z", // 5:45 PM IST
       "SUMMARY:Sweenal & Ashay's Wedding",
       "LOCATION:Queen's Land Celebration Lawn & Banquet\\, Nagpur\\, Maharashtra",
-      "DESCRIPTION:Varmala & Wedding. Dress code: lehenga · formal or Jodhpuri.",
+      "DESCRIPTION:Varmala & Wedding. Dress code: lehenga or saree · suit, bandhgala or Jodhpuri.",
       "END:VEVENT",
       "END:VCALENDAR",
     ].join("\r\n");

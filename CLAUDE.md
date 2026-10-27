@@ -71,5 +71,6 @@ python3 -m http.server 8000
 Event names, dates and the venue appear in several places, on both pages (`index.html` and `events/index.html`; the countdown target is the `data-target` on `#countdown`, which differs per page): the `<meta description>`, `<title>`, hero, event cards, the dress-code cards, FAQ, footer and the countdown in `main.js`. When one changes, update all of them.
 
 ## Known gaps
+- The couple changed the Varmala & Wedding dress code for ladies from "lehenga only" to "lehenga or saree", and for men to "suit, bandhgala or Jodhpuri" (it differs from outfit_code.jpeg, which is now out of date on this point).
 - Event times are TBA except Varmala & Wedding (5:45 PM). Parking details, the Nashik trip date and the other events' times are still placeholders. Stay is available at the venue; the families' contacts (Ganesh Kohad, father of the groom, +91 99706 25637; Prabhakar Umredkar, father of the bride, +91 77578 85815) are in the Contact section with call and WhatsApp buttons.
 - The dress-code planner lists Mehendi and Reception, but they aren't in the Events schedule yet because their dates are unknown. The planner's Carnival, Vaidik Wedding and Varmala map to Haldi, Vidhi and Varmala & Wedding.
