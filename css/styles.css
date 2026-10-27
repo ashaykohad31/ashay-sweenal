@@ -39,6 +39,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -49,6 +51,9 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   overflow-x: hidden;
+  overflow-x: clip;
+  /* only vertical panning: no sideways sliding and no pinch-zoom (swipes in the photo viewer still reach the script) */
+  touch-action: pan-y;
 }
 
 img {
