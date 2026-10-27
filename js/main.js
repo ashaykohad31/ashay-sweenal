@@ -1,25 +1,188 @@
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(pointer: fine)").matches;
 
-// Opening invitation: tap the seal (or anywhere) and the two flaps swing open
+// Opening invitation: tap the seal and the two doors swing open
 const invite = document.getElementById("invite");
-const pageParts = document.querySelectorAll(".site-header, main, .site-footer");
+const pageParts = document.querySelectorAll("main, .site-footer");
 
-pageParts.forEach((el) => (el.inert = true));
-document.getElementById("invite-seal").focus({ preventScroll: true });
+// the events page has no doors, so everything below tolerates a missing #invite
+if (invite) {
+  pageParts.forEach((el) => (el.inert = true));
+  document.getElementById("invite-seal").focus({ preventScroll: true });
+  invite.addEventListener("click", openInvite);
+}
 
 function openInvite() {
   const root = document.documentElement;
   if (root.classList.contains("invite-open")) return;
   root.classList.add("invite-open");
+  if (readMusicState() !== "off") playMusic();
   pageParts.forEach((el) => (el.inert = false));
-  setTimeout(() => (invite.hidden = true), reduceMotion ? 600 : 2000);
+  setTimeout(() => (invite.hidden = true), reduceMotion ? 600 : 2200);
 }
 
-invite.addEventListener("click", openInvite);
+// Music: starts when the seal is tapped (browsers need a tap first); the corner button mutes it,
+// and the choice and position carry over to the other page
+const music = document.getElementById("music");
+const musicToggle = document.getElementById("music-toggle");
+music.volume = 0.6;
 
-// Countdown to the first event (12 Dec 2026, Nagpur is IST / UTC+5:30)
-const weddingStart = new Date("2026-12-12T09:00:00+05:30");
+function readMusicState() {
+  try {
+    return sessionStorage.getItem("music");
+  } catch (e) {
+    return null; // storage blocked: treat as no saved choice
+  }
+}
+
+function saveMusic(key, value) {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch (e) {
+    // the choice just won't carry over to the other page
+  }
+}
+
+function showMusicState(playing) {
+  musicToggle.classList.toggle("is-playing", playing);
+  musicToggle.setAttribute("aria-pressed", String(playing));
+  musicToggle.setAttribute("aria-label", playing ? "Mute music" : "Play music");
+}
+
+function playMusic() {
+  music
+    .play()
+    .then(() => {
+      saveMusic("music", "on");
+      showMusicState(true);
+    })
+    .catch(() => showMusicState(false));
+}
+
+musicToggle.addEventListener("click", () => {
+  if (music.paused) {
+    saveMusic("music", "on");
+    playMusic();
+  } else {
+    saveMusic("music", "off");
+    music.pause();
+    showMusicState(false);
+  }
+});
+
+window.addEventListener("pagehide", () => saveMusic("musicTime", String(music.currentTime)));
+
+// on the events page there are no doors, so pick the music up where the invitation left it
+if (!invite && readMusicState() === "on") {
+  music.currentTime = Number(sessionStorage.getItem("musicTime")) || 0;
+  playMusic();
+  // if the browser refused to start it, the first tap anywhere does
+  document.addEventListener("pointerdown", () => music.paused && readMusicState() === "on" && playMusic(), { once: true });
+}
+
+// Hero scratch card: rub away the gold foil to reveal "With love, you are invited"
+const hero = document.getElementById("home");
+const scratch = document.getElementById("scratch");
+const scratchCanvas = document.getElementById("scratch-canvas");
+
+// petals fly out of the scratch card when it is revealed
+function burstPetals() {
+  const box = scratch.getBoundingClientRect();
+  for (let i = 0; i < 28; i++) {
+    const petal = document.createElement("span");
+    petal.className = "burst-petal";
+    petal.style.setProperty("--x", `${box.left + box.width / 2}px`);
+    petal.style.setProperty("--y", `${box.top + box.height / 2}px`);
+    petal.style.setProperty("--dx", `${(Math.random() - 0.5) * window.innerWidth * 0.9}px`);
+    petal.style.setProperty("--dy", `${(Math.random() - 0.3) * window.innerHeight * 0.7}px`);
+    petal.style.setProperty("--rot", `${Math.random() * 720 - 360}deg`);
+    petal.style.setProperty("--t", `${1.6 + Math.random() * 1.2}s`);
+    petal.addEventListener("animationend", () => petal.remove());
+    document.body.appendChild(petal);
+  }
+}
+
+function revealInvite() {
+  if (hero.classList.contains("is-scratched")) return;
+  hero.classList.add("is-scratched");
+  scratch.removeAttribute("aria-label");
+  scratch.removeAttribute("role");
+  scratch.removeAttribute("tabindex");
+  if (reduceMotion) drawPetals(false);
+  else burstPetals();
+}
+
+// gold foil over the text, rubbed away with a finger or mouse
+const scratchCtx = scratchCanvas.getContext("2d", { willReadFrequently: true });
+const dpr = Math.min(window.devicePixelRatio || 1, 2);
+const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+function paintFoil() {
+  scratchCanvas.width = Math.round(scratch.clientWidth * dpr);
+  scratchCanvas.height = Math.round(scratch.clientHeight * dpr);
+  const foil = scratchCtx.createLinearGradient(0, 0, scratchCanvas.width, scratchCanvas.height);
+  foil.addColorStop(0, cssVar("--color-gold"));
+  foil.addColorStop(0.5, cssVar("--color-gold-light"));
+  foil.addColorStop(1, cssVar("--color-gold"));
+  scratchCtx.fillStyle = foil;
+  scratchCtx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+  scratchCtx.fillStyle = cssVar("--color-night-2");
+  scratchCtx.font = `500 ${12 * dpr}px ${cssVar("--font-sans")}`;
+  scratchCtx.textAlign = "center";
+  scratchCtx.textBaseline = "middle";
+  scratchCtx.fillText("SCRATCH HERE", scratchCanvas.width / 2, scratchCanvas.height / 2);
+}
+
+function scratchedShare() {
+  const { data } = scratchCtx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
+  let cleared = 0;
+  let total = 0;
+  for (let i = 3; i < data.length; i += 16) {
+    total++;
+    if (data[i] === 0) cleared++;
+  }
+  return cleared / total;
+}
+
+let last = null;
+let strokes = 0;
+
+function scratchTo(event) {
+  const box = scratchCanvas.getBoundingClientRect();
+  const x = ((event.clientX - box.left) / box.width) * scratchCanvas.width;
+  const y = ((event.clientY - box.top) / box.height) * scratchCanvas.height;
+  scratchCtx.globalCompositeOperation = "destination-out";
+  scratchCtx.lineWidth = 26 * dpr;
+  scratchCtx.lineCap = "round";
+  scratchCtx.beginPath();
+  scratchCtx.moveTo(last ? last.x : x, last ? last.y : y);
+  scratchCtx.lineTo(x, y);
+  scratchCtx.stroke();
+  last = { x, y };
+  if (++strokes % 6 === 0 && scratchedShare() > 0.4) revealInvite();
+}
+
+document.fonts.ready.then(paintFoil);
+
+scratchCanvas.addEventListener("pointerdown", (event) => {
+  scratchCanvas.setPointerCapture(event.pointerId);
+  last = null;
+  scratchTo(event);
+});
+
+scratchCanvas.addEventListener("pointermove", (event) => {
+  if (scratchCanvas.hasPointerCapture(event.pointerId)) scratchTo(event);
+});
+
+scratch.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    revealInvite();
+  }
+});
+
+// Countdown to the date in data-target (the plain page counts to the wedding, the events page to the first event; IST is UTC+5:30)
+const weddingStart = new Date(document.getElementById("countdown").dataset.target);
 
 const cd = {
   days: document.getElementById("cd-days"),
@@ -54,25 +217,7 @@ function updateCountdown() {
 const countdownTimer = setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Mobile menu
-const navToggle = document.querySelector(".nav-toggle");
-const navLinks = document.getElementById("nav-links");
-
-navToggle.addEventListener("click", () => {
-  const open = navLinks.classList.toggle("is-open");
-  navToggle.setAttribute("aria-expanded", String(open));
-  navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-});
-
-navLinks.addEventListener("click", (e) => {
-  if (e.target.tagName === "A") {
-    navLinks.classList.remove("is-open");
-    navToggle.setAttribute("aria-expanded", "false");
-  }
-});
-
-// Hero: 3D petal field on a canvas, with the camera following the pointer
-const hero = document.getElementById("home");
+// Hero: 3D petal field on a canvas (it starts falling once the scratch card is revealed), with the camera following the pointer
 const heroCard = document.getElementById("hero-card");
 const canvas = document.getElementById("petals");
 const ctx = canvas.getContext("2d");
@@ -113,7 +258,7 @@ function resizeCanvas() {
     petals = Array.from({ length: count }, () => makePetal(true));
     petals.sort((a, b) => b.z - a.z); // draw far petals first
   }
-  if (reduceMotion) drawPetals(false);
+  if (reduceMotion && hero.classList.contains("is-scratched")) drawPetals(false);
 }
 
 function drawPetals(step) {
@@ -169,7 +314,7 @@ function drawPetals(step) {
 }
 
 function animatePetals() {
-  if (heroVisible) drawPetals(true);
+  if (heroVisible && hero.classList.contains("is-scratched")) drawPetals(true);
   requestAnimationFrame(animatePetals);
 }
 
@@ -259,7 +404,7 @@ function updateTimeline() {
   timelineTicking = false;
 }
 
-if (!reduceMotion) {
+if (timeline && !reduceMotion) {
   window.addEventListener(
     "scroll",
     () => {
@@ -273,76 +418,78 @@ if (!reduceMotion) {
 }
 
 // Memories: open any photo full screen, then swipe, use the arrows or the keyboard
-const lightbox = document.getElementById("lightbox");
-const lightboxMedia = document.getElementById("lightbox-media");
-const lightboxCaption = document.getElementById("lightbox-caption");
-const lightboxCount = document.getElementById("lightbox-count");
-const memories = Array.from(document.querySelectorAll(".memory"));
-let currentMemory = 0;
+if (document.getElementById("lightbox")) {
+  const lightbox = document.getElementById("lightbox");
+  const lightboxMedia = document.getElementById("lightbox-media");
+  const lightboxCaption = document.getElementById("lightbox-caption");
+  const lightboxCount = document.getElementById("lightbox-count");
+  const memories = Array.from(document.querySelectorAll(".memory"));
+  let currentMemory = 0;
 
-function showMemory(index, direction) {
-  currentMemory = (index + memories.length) % memories.length;
-  const item = memories[currentMemory];
-  const thumb = item.querySelector("img");
-  let media;
+  function showMemory(index, direction) {
+    currentMemory = (index + memories.length) % memories.length;
+    const item = memories[currentMemory];
+    const thumb = item.querySelector("img");
+    let media;
 
-  if (thumb) {
-    media = document.createElement("img");
-    media.src = item.dataset.full || thumb.src;
-    media.alt = thumb.alt;
-  } else {
-    media = document.createElement("div");
-    media.className = "photo-placeholder";
-    media.textContent = item.dataset.caption;
+    if (thumb) {
+      media = document.createElement("img");
+      media.src = item.dataset.full || thumb.src;
+      media.alt = thumb.alt;
+    } else {
+      media = document.createElement("div");
+      media.className = "photo-placeholder";
+      media.textContent = item.dataset.caption;
+    }
+
+    lightboxMedia.replaceChildren(media);
+    lightboxCaption.textContent = item.dataset.caption || "";
+    lightboxCount.textContent = `${currentMemory + 1} / ${memories.length}`;
+    lightboxMedia.style.setProperty("--from", `${direction * 35}deg`);
+    lightboxMedia.classList.remove("is-entering");
+    void lightboxMedia.offsetWidth; // restart the entrance animation
+    lightboxMedia.classList.add("is-entering");
   }
 
-  lightboxMedia.replaceChildren(media);
-  lightboxCaption.textContent = item.dataset.caption || "";
-  lightboxCount.textContent = `${currentMemory + 1} / ${memories.length}`;
-  lightboxMedia.style.setProperty("--from", `${direction * 35}deg`);
-  lightboxMedia.classList.remove("is-entering");
-  void lightboxMedia.offsetWidth; // restart the entrance animation
-  lightboxMedia.classList.add("is-entering");
-}
-
-memories.forEach((item, i) => {
-  item.addEventListener("click", () => {
-    showMemory(i, 0);
-    lightbox.showModal();
+  memories.forEach((item, i) => {
+    item.addEventListener("click", () => {
+      showMemory(i, 0);
+      lightbox.showModal();
+    });
   });
-});
 
-lightbox.querySelector(".lightbox-prev").addEventListener("click", () => showMemory(currentMemory - 1, -1));
-lightbox.querySelector(".lightbox-next").addEventListener("click", () => showMemory(currentMemory + 1, 1));
-lightbox.querySelector(".lightbox-close").addEventListener("click", () => lightbox.close());
+  lightbox.querySelector(".lightbox-prev").addEventListener("click", () => showMemory(currentMemory - 1, -1));
+  lightbox.querySelector(".lightbox-next").addEventListener("click", () => showMemory(currentMemory + 1, 1));
+  lightbox.querySelector(".lightbox-close").addEventListener("click", () => lightbox.close());
 
-let justSwiped = false;
-lightbox.addEventListener("click", (e) => {
-  if (justSwiped) {
-    justSwiped = false; // a swipe that ends on the backdrop shouldn't close the viewer
-    return;
-  }
-  if (e.target === lightbox) lightbox.close();
-});
+  let justSwiped = false;
+  lightbox.addEventListener("click", (e) => {
+    if (justSwiped) {
+      justSwiped = false; // a swipe that ends on the backdrop shouldn't close the viewer
+      return;
+    }
+    if (e.target === lightbox) lightbox.close();
+  });
 
-lightbox.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft") showMemory(currentMemory - 1, -1);
-  if (e.key === "ArrowRight") showMemory(currentMemory + 1, 1);
-});
+  lightbox.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") showMemory(currentMemory - 1, -1);
+    if (e.key === "ArrowRight") showMemory(currentMemory + 1, 1);
+  });
 
-let swipeStartX = null;
-lightbox.addEventListener("pointerdown", (e) => {
-  swipeStartX = e.clientX;
-});
-lightbox.addEventListener("pointerup", (e) => {
-  if (swipeStartX === null) return;
-  const dx = e.clientX - swipeStartX;
-  swipeStartX = null;
-  if (Math.abs(dx) > 50) {
-    justSwiped = true;
-    showMemory(currentMemory + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
-  }
-});
+  let swipeStartX = null;
+  lightbox.addEventListener("pointerdown", (e) => {
+    swipeStartX = e.clientX;
+  });
+  lightbox.addEventListener("pointerup", (e) => {
+    if (swipeStartX === null) return;
+    const dx = e.clientX - swipeStartX;
+    swipeStartX = null;
+    if (Math.abs(dx) > 50) {
+      justSwiped = true;
+      showMemory(currentMemory + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+    }
+  });
+}
 
 // Fade sections and story moments in on scroll
 const observer = new IntersectionObserver(
@@ -358,3 +505,35 @@ const observer = new IntersectionObserver(
 );
 
 document.querySelectorAll(".reveal, .moment").forEach((el) => observer.observe(el));
+
+// Sparkles: gold stars follow the mouse and burst wherever you tap
+if (!reduceMotion) {
+  const sparkle = (x, y, reach, size) => {
+    const star = document.createElement("span");
+    const angle = Math.random() * Math.PI * 2;
+    const distance = reach * (0.4 + Math.random() * 0.6);
+    star.className = "sparkle";
+    star.style.setProperty("--x", `${x}px`);
+    star.style.setProperty("--y", `${y}px`);
+    star.style.setProperty("--dx", `${Math.cos(angle) * distance}px`);
+    star.style.setProperty("--dy", `${Math.sin(angle) * distance + 10}px`);
+    star.style.setProperty("--size", `${size * (0.6 + Math.random() * 0.8)}px`);
+    star.addEventListener("animationend", () => star.remove());
+    document.body.appendChild(star);
+  };
+
+  let lastTrail = 0;
+  if (finePointer) {
+    document.addEventListener("pointermove", (e) => {
+      const now = performance.now();
+      if (now - lastTrail < 70) return;
+      lastTrail = now;
+      sparkle(e.clientX, e.clientY, 24, 9);
+    });
+  }
+
+  document.addEventListener("pointerdown", (e) => {
+    if (e.target.closest(".scratch")) return;
+    for (let i = 0; i < 9; i++) sparkle(e.clientX, e.clientY, 60, 12);
+  });
+}

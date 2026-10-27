@@ -1,16 +1,19 @@
 # CLAUDE.md
 
-Wedding website for **Sweenal & Ashay**: 12–13 December 2026, Queen's Land Celebration Lawn & Banquet, Nagpur. It's a single-page static site.
+Wedding website for **Sweenal & Ashay**: 12–13 December 2026, Queen's Land Celebration Lawn & Banquet, Nagpur. It's a small static site with two pages: a plain invitation at `/` and the full version at `/events/`.
 
 ## Stack
 
 - Plain HTML, CSS and JavaScript. There is no build step, no package manager, no framework and no tests.
-- `index.html`: every section of the page (hero, story timeline, events, dress code, venue, travel, memories, FAQ, footer).
+- `index.html`: the plain invitation: doors, hero (13 December 2026), The Wedding card (Varmala & Wedding, Sunday 13 December 2026, evening 5:45 PM) with a link to `/events/`, a dress code for that event only, plus Our Story, Venue (with map) and Memories. It deliberately leaves out the full event list, travel and FAQ, which live on `/events/`.
+- `events/index.html`: the full version at `/events/` (no doors; asset paths start with `../`): hero, story timeline, events for both days, the whole dress-code planner, venue, travel, memories, FAQ and footer. It sets `invite-open` on `<html>` itself so the hero entrance plays.
 - **Scope:** the site is only a wedding invitation and a place for memories. It collects nothing from guests: no RSVP, guest list, meal preferences or guestbook, and no backend. Don't add any of these unless the couple asks.
 - `css/styles.css`: all styles, grouped under `/* Section */` comment headers in page order, with `/* Responsive */` at the end
-- `js/main.js`: the countdown (with digit flip), the mobile nav toggle, the hero's canvas petal field, 3D card tilt, the dress-code ladies/gents flip, the story timeline's scroll-drawn line, the Memories lightbox (`<dialog>`, with swipe and arrow keys), and scroll-reveal (IntersectionObserver)
+- There is no top bar or nav menu, and the site is English only (a Marathi version was tried and removed at the couple's request).
+- Music: `audio/music.m4a` (a 47-second AAC loop) plays from `<audio id="music">` on both pages. It starts when the seal is tapped (browsers block autoplay before a tap), `.music-toggle` in the corner mutes it, and the on/off choice and position are passed to the other page through `sessionStorage`.
+- `js/main.js`: the countdown (with digit flip), the hero's canvas petal field, 3D card tilt, the dress-code ladies/gents flip, the story timeline's scroll-drawn line, the Memories lightbox (`<dialog>`, with swipe and arrow keys), scroll-reveal (IntersectionObserver), and the gold sparkle trail and tap bursts
 - `images/outfits/`: `ladies-1…6.jpg` and `gents-1…6.jpg`, cropped from `outfit_code.jpeg` (the couple's wardrobe planner, which is the source of truth for dress codes)
-- Fonts come from Google Fonts: Cormorant Garamond (serif headings), Great Vibes (script accents, such as the `&`) Jost (body text) and Tiro Devanagari Sanskrit (for ॥ श्री गणेशाय नमः ॥).
+- Fonts come from Google Fonts: Cinzel (`--font-display`, royal section headings), Pinyon Script (`--font-script`, calligraphy for the couple's names and accents such as the `&`), Cormorant Garamond (serif for card titles and numbers), Jost (body text) and Tiro Devanagari Sanskrit (for ॥ श्री गणेशाय नमः ॥).
 - Ganesh ji sits at the top of the hero as a photo (`images/ganeshji.jpg`, resized from the couple's `ganeshji.png`) inside a round cream medallion (`.ganesh-medallion`), because the image has a white background. The current file is a watermarked stock preview, so replace it with a licensed copy before publishing. The top of the hero is where Ganesh ji traditionally appears on a wedding card. Treat it respectfully: keep it at the top and give it its own space, never use it as a casual decoration or at a small size elsewhere, and don't draw text or petals over it.
 
 ## Running locally
@@ -25,11 +28,12 @@ python3 -m http.server 8000
 
 ### General
 - Keep the site dependency-free. Don't add frameworks, bundlers, npm or CDN JS libraries unless asked.
-- Keep it one page. A new section is a `<section class="section reveal" id="...">` inside `<main>`. Alternate `section-tinted` so the backgrounds keep switching, and add a nav link in `.nav-links` if the section should be reachable from the menu.
+- Keep it to these two pages. A new section is a `<section class="section reveal" id="...">` inside `<main>`. Alternate `section-tinted` so the backgrounds keep switching.
 - Each section follows the same heading pattern: `<p class="section-eyebrow">` → `<h2>` → content.
 
 ### 3D and motion
-- **Opening invitation:** the page loads behind a closed card (`#invite`), two flaps with a gold seal. Tapping it adds `invite-open` to `<html>`, which swings the flaps open (`rotateY(±105deg)`) and only then plays the hero entrance. A tiny inline script in `<head>` adds the `js` class, so the overlay never appears (or traps anyone) if JavaScript fails. While the card is closed, the header, main and footer are `inert`.
+- **Opening invitation:** the page loads behind a closed pair of doors (`#invite`): two `.invite-flap` doors with a gold double-line seam between them, a carved arch panel on each (`.door-panel`, which join into one arch when shut), brass studs, hinge plates and door rings, and a gold seal with the S&A initials on the seam. Don't put the names on the doors; the initials are enough. Tapping adds `invite-open` to `<html>`, which swings the doors open inwards (`rotateY(±78deg)`, hinged at the outer edges) and only then plays the hero entrance. A tiny inline script in `<head>` adds the `js` class, so the overlay never appears (or traps anyone) if JavaScript fails. While the card is closed, the header, main and footer are `inert`.
+- **Scratch card:** in the hero, below the date and place, `#scratch` is a `<canvas>` of gold foil over "With love, you are invited". Scratching away 40% of it (or pressing Enter on it) adds `is-scratched` to `.hero`, which fades the rest of the foil away, starts the falling hero petals (the `#petals` canvas stays hidden until then), and releases a petal burst. There are no corner florals; the couple asked for them to be removed.
 - The look is "3D animated": a dark maroon hero with a canvas petal field and a pointer-tilted card, a 3D reveal on each section, tilt-and-glare cards, flip cards in the dress code, and a rotating gallery ring.
 - Make a card tilt by adding `data-tilt`. main.js sets `--rx`/`--ry`/`--gx`/`--gy` on it. Tilt only runs for mouse pointers.
 - In the dress code, `.wardrobe.is-gents` rotates every `.outfit-inner` to its back face. Keep `aria-hidden` on whichever face is hidden; main.js swaps it.
@@ -55,13 +59,13 @@ python3 -m http.server 8000
 ### HTML and accessibility
 - 2-space indentation and double-quoted attributes.
 - Escape `&` as `&amp;` in text and attributes.
-- Keep the existing ARIA wiring: `aria-expanded`/`aria-controls`/`aria-label` on `.nav-toggle`, `aria-live` on the countdown, `role="status"` on the form note, and `aria-hidden` on decorative elements.
+- Keep the existing ARIA wiring: `aria-live` on the countdown, `role="status"` on the form note, and `aria-hidden` on decorative elements.
 - External links use `target="_blank" rel="noopener"`. Iframes need a `title` and `loading="lazy"`.
 - Placeholder content uses `.photo-placeholder` figures or "TBA" / "will be shared soon" text. Replace it only with real details the user provides. Never invent times, contacts, hotels or names.
 
 ### Content consistency
-Event names, dates and the venue appear in several places: the `<meta description>`, `<title>`, hero, event cards, the dress-code cards, FAQ, footer and the countdown in `main.js`. When one changes, update all of them.
+Event names, dates and the venue appear in several places, on both pages (`index.html` and `events/index.html`; the countdown target is the `data-target` on `#countdown`, which differs per page): the `<meta description>`, `<title>`, hero, event cards, the dress-code cards, FAQ, footer and the countdown in `main.js`. When one changes, update all of them.
 
 ## Known gaps
-- Event times are TBA. Photos, story text, hotels, parking and contact details are still placeholders.
+- Event times are TBA except Varmala & Wedding (5:45 PM). Photos, story text, hotels, parking and contact details are still placeholders.
 - The dress-code planner lists Mehendi and Reception, but they aren't in the Events schedule yet because their dates are unknown. The planner's Carnival, Vaidik Wedding and Varmala map to Haldi, Vidhi and Varmala & Wedding.

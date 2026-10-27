@@ -25,7 +25,8 @@
   --swatch-orange: #f08a2c;
   --swatch-pink: #ec7a9c;
   --font-serif: "Cormorant Garamond", Georgia, serif;
-  --font-script: "Great Vibes", cursive;
+  --font-display: "Cinzel", "Cormorant Garamond", Georgia, serif;
+  --font-script: "Pinyon Script", cursive;
   --font-devanagari: "Tiro Devanagari Sanskrit", "Noto Serif Devanagari", serif;
   --font-sans: "Jost", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --max-width: 1080px;
@@ -37,7 +38,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 4.5rem;
 }
 
 body {
@@ -59,19 +59,20 @@ a {
   color: var(--color-accent);
 }
 
-/* Opening invitation: two flaps meet at the centre and swing open on tap */
+/* Opening invitation: a pair of palace doors with a gold seam and a seal; tap the seal and they swing open */
 
 .invite {
   display: none;
 }
 
 .js .invite {
+  --seal: 118px;
   display: block;
   position: fixed;
   inset: 0;
   z-index: 100;
   perspective: 1800px;
-  cursor: pointer;
+  perspective-origin: 50% 50%;
 }
 
 .js .invite[hidden] {
@@ -90,30 +91,33 @@ html.js:not(.invite-open) {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 50.5%;
+  width: 50%;
   overflow: hidden;
   background:
     radial-gradient(ellipse at 100% 50%, rgba(184, 137, 59, 0.28), transparent 65%),
     linear-gradient(180deg, var(--color-night-2), var(--color-night));
   transition:
-    transform 1.6s cubic-bezier(0.65, 0, 0.25, 1),
-    opacity 0.5s 1.25s;
+    transform 1.8s cubic-bezier(0.65, 0, 0.25, 1),
+    opacity 0.5s 1.3s;
 }
 
+/* the vertical divider where the two doors meet: a double gold line */
 .invite-flap-left {
   left: 0;
   transform-origin: 0 50%;
+  border-right: 8px double var(--color-gold);
 }
 
 .invite-flap-right {
   right: 0;
   transform-origin: 100% 50%;
+  border-left: 8px double var(--color-gold);
   background:
     radial-gradient(ellipse at 0% 50%, rgba(184, 137, 59, 0.28), transparent 65%),
     linear-gradient(180deg, var(--color-night-2), var(--color-night));
 }
 
-/* gold frame that runs across both flaps */
+/* gold frame that runs across both doors */
 .invite-flap::before {
   content: "";
   position: absolute;
@@ -130,91 +134,119 @@ html.js:not(.invite-open) {
   border-radius: 0 10px 10px 0;
 }
 
-/* shading that deepens as each flap swings towards the viewer */
+/* shading that deepens as each door swings away */
 .invite-flap::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.55));
   opacity: 0;
-  transition: opacity 1.6s;
+  transition: opacity 1.8s;
 }
 
 .invite-flap-right::after {
   background: linear-gradient(270deg, transparent, rgba(0, 0, 0, 0.55));
 }
 
-.flap-mandala {
-  --size: min(140vw, 680px);
+/* carved arch panel: the two panels join into one arch when the doors are shut */
+.door-panel {
   position: absolute;
-  top: 50%;
-  right: calc(var(--size) / -2);
-  width: var(--size);
-  height: var(--size);
-  margin-top: calc(var(--size) / -2);
-  border-radius: 50%;
-  opacity: 0.55;
+  top: 34px;
+  bottom: 34px;
+  left: clamp(28px, 8vw, 56px);
+  right: 22px;
+  border: 2px solid var(--color-gold);
+  border-radius: 100vw 0 0 0;
   background:
-    radial-gradient(
-      circle,
-      transparent 0 26%,
-      rgba(230, 194, 122, 0.7) 26.3% 26.8%,
-      transparent 27.1% 37%,
-      rgba(230, 194, 122, 0.45) 37.3% 37.7%,
-      transparent 38% 48.6%,
-      rgba(230, 194, 122, 0.6) 48.9% 49.4%,
-      transparent 49.7%
-    ),
-    repeating-conic-gradient(rgba(230, 194, 122, 0.2) 0 2.5deg, transparent 2.5deg 10deg);
-  -webkit-mask: radial-gradient(circle, transparent 0 18%, #000 19% 49.7%, transparent 50%);
-  mask: radial-gradient(circle, transparent 0 18%, #000 19% 49.7%, transparent 50%);
+    linear-gradient(180deg, rgba(122, 31, 43, 0.4), rgba(31, 10, 16, 0.15));
+  box-shadow:
+    inset 0 0 0 6px var(--color-night),
+    inset 0 0 0 7px rgba(230, 194, 122, 0.55),
+    inset 0 0 40px rgba(0, 0, 0, 0.45);
 }
 
-.invite-flap-right .flap-mandala {
+.invite-flap-right .door-panel {
+  left: 22px;
+  right: clamp(28px, 8vw, 56px);
+  border-radius: 0 100vw 0 0;
+  background:
+    linear-gradient(180deg, rgba(122, 31, 43, 0.4), rgba(31, 10, 16, 0.15));
+}
+
+/* a column of brass studs beside the seam */
+.door-studs {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  right: 6px;
+  width: 12px;
+  background: radial-gradient(circle, var(--color-gold-light) 0 1.5px, var(--color-gold) 2.5px, transparent 3.5px) 50% 0 / 12px 26px repeat-y;
+}
+
+.invite-flap-right .door-studs {
   right: auto;
-  left: calc(var(--size) / -2);
+  left: 6px;
+}
+
+/* three gold hinge plates on the outer edge */
+.door-hinges {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 14px;
+  background:
+    linear-gradient(90deg, var(--color-gold-light), var(--color-gold)) 0 16% / 100% 34px no-repeat,
+    linear-gradient(90deg, var(--color-gold-light), var(--color-gold)) 0 50% / 100% 34px no-repeat,
+    linear-gradient(90deg, var(--color-gold-light), var(--color-gold)) 0 84% / 100% 34px no-repeat;
+  border-radius: 0 4px 4px 0;
+  opacity: 0.85;
+}
+
+.invite-flap-right .door-hinges {
+  left: auto;
+  right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+/* brass door ring beside the seam, below the seal */
+.door-ring {
+  position: absolute;
+  top: 70%;
+  right: 22px;
+  width: 36px;
+  height: 36px;
+  border: 4px solid var(--color-gold);
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 55%, rgba(0, 0, 0, 0.35));
+  box-shadow:
+    0 6px 10px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px var(--color-gold-light);
+}
+
+.invite-flap-right .door-ring {
+  right: auto;
+  left: 22px;
 }
 
 .invite-front {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  text-align: center;
   color: var(--color-on-dark);
+  text-align: center;
+  pointer-events: none;
   transition: opacity 0.5s, transform 0.6s var(--ease-out);
 }
 
-.invite-eyebrow {
-  margin: 0 0 0.25rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--color-gold-light);
-}
-
-.invite-names {
-  margin: 0 0 2rem;
-  font-family: var(--font-serif);
-  font-size: clamp(2.2rem, 9vw, 3.6rem);
-  line-height: 1.1;
-  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-}
-
-.invite-names span {
-  font-family: var(--font-script);
-  color: var(--color-gold-light);
-}
-
 .invite-seal {
+  position: absolute;
+  top: calc(50% - var(--seal) / 2);
+  left: calc(50% - var(--seal) / 2);
   display: grid;
   place-items: center;
   grid-auto-flow: column;
-  width: 118px;
-  height: 118px;
+  width: var(--seal);
+  height: var(--seal);
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -229,8 +261,17 @@ html.js:not(.invite-open) {
   font-weight: 600;
   color: var(--color-night);
   cursor: pointer;
+  pointer-events: auto;
   animation: seal-pulse 2.4s ease-in-out infinite;
   transition: transform 0.5s var(--ease-out), opacity 0.4s;
+}
+
+.invite-seal::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px dashed rgba(94, 22, 33, 0.5);
+  border-radius: 50%;
 }
 
 .invite-seal span {
@@ -246,8 +287,12 @@ html.js:not(.invite-open) {
 }
 
 .invite-hint {
-  margin: 2rem 0 0;
-  font-size: 0.75rem;
+  position: absolute;
+  top: calc(50% + var(--seal) / 2 + 1.75rem);
+  left: 0;
+  right: 0;
+  margin: 0;
+  font-size: 0.7rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: rgba(248, 238, 224, 0.75);
@@ -265,13 +310,14 @@ html.js:not(.invite-open) {
   transform: scale(1.08);
 }
 
+/* doors open inwards, hinged at the outer edges */
 .invite-open .invite-flap-left {
-  transform: rotateY(-105deg);
+  transform: rotateY(78deg);
   opacity: 0;
 }
 
 .invite-open .invite-flap-right {
-  transform: rotateY(105deg);
+  transform: rotateY(-78deg);
   opacity: 0;
 }
 
@@ -296,94 +342,21 @@ html.js:not(.invite-open) {
   }
 }
 
-/* Header */
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: rgba(251, 246, 238, 0.88);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--color-line);
+@keyframes reveal-glow {
+  50% {
+    text-shadow: 0 0 18px rgba(230, 194, 122, 0.7);
+  }
 }
 
-.nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0.85rem 1.25rem;
-}
-
-.logo {
-  font-family: var(--font-serif);
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--color-accent);
-  text-decoration: none;
-}
-
-.logo span {
-  font-family: var(--font-script);
-  color: var(--color-gold);
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.nav-links a {
-  position: relative;
-  color: var(--color-muted);
-  text-decoration: none;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -4px;
-  height: 1px;
-  background: var(--color-gold);
-  transform: scaleX(0);
-  transition: transform 0.3s var(--ease-out);
-}
-
-.nav-links a:hover {
-  color: var(--color-accent);
-}
-
-.nav-links a:hover::after {
-  transform: scaleX(1);
-}
-
-.nav-toggle {
-  display: none;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
-
-.nav-toggle span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  margin: 5px auto;
-  background: var(--color-accent);
-  transition: transform 0.2s;
+@keyframes petal-burst {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
+  }
 }
 
 /* Hero */
@@ -392,7 +365,7 @@ html.js:not(.invite-open) {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: calc(100svh - 4.4rem);
+  min-height: 100svh;
   padding: 3rem 1.25rem 5rem;
   overflow: hidden;
   text-align: center;
@@ -408,6 +381,12 @@ html.js:not(.invite-open) {
   inset: 0;
   width: 100%;
   height: 100%;
+  opacity: 0;
+  transition: opacity 1.2s;
+}
+
+.is-scratched .hero-canvas {
+  opacity: 1;
 }
 
 .hero-stage {
@@ -541,19 +520,28 @@ html.js:not(.invite-open) {
 
 .hero h1 {
   margin: 0.5rem 0;
-  font-family: var(--font-serif);
-  font-size: clamp(3.25rem, 11vw, 6.5rem);
-  font-weight: 500;
-  line-height: 1;
-  color: var(--color-on-dark);
-  text-shadow:
-    0 1px 0 rgba(184, 137, 59, 0.6),
-    0 2px 0 rgba(184, 137, 59, 0.45),
-    0 3px 0 rgba(184, 137, 59, 0.3),
-    0 18px 30px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-script);
+  font-size: clamp(3.6rem, 13vw, 7rem);
+  font-weight: 400;
+  line-height: 1.15;
+  background: linear-gradient(
+    100deg,
+    var(--color-on-dark) 20%,
+    var(--color-gold-light) 42%,
+    var(--color-surface) 50%,
+    var(--color-gold-light) 58%,
+    var(--color-on-dark) 80%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.5));
+  animation: name-shimmer 7s linear infinite;
 }
 
 .hero-amp {
+  -webkit-text-fill-color: var(--color-gold-light);
   display: block;
   font-family: var(--font-script);
   font-size: 0.7em;
@@ -670,6 +658,15 @@ html.js:not(.invite-open) {
   }
 }
 
+@keyframes name-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
 @keyframes ring-spin {
   to {
     transform: rotateY(360deg);
@@ -695,6 +692,83 @@ html.js:not(.invite-open) {
     opacity: 0;
     transform: translateY(14px);
   }
+}
+
+/* scratch-off card: gold foil over "You are invited" */
+.scratch {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 280px);
+  height: 4.75rem;
+  margin: 0 auto 1.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(230, 194, 122, 0.45);
+  border-radius: 12px;
+  background: radial-gradient(ellipse at 50% 50%, var(--color-night-2), var(--color-night));
+  cursor: pointer;
+}
+
+.scratch:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 3px;
+}
+
+.scratch-text {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: 1.9rem;
+  line-height: 1.1;
+  color: var(--color-gold-light);
+}
+
+.scratch-text small {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(248, 238, 224, 0.75);
+}
+
+.is-scratched .scratch-text {
+  animation: reveal-glow 2.4s ease-in-out infinite;
+}
+
+.scratch-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  transition: opacity 0.8s;
+}
+
+.is-scratched .scratch-canvas {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* petals that fly out from the scratch card when it is revealed */
+.burst-petal {
+  position: fixed;
+  z-index: 120;
+  left: var(--x);
+  top: var(--y);
+  width: 10px;
+  pointer-events: none;
+  height: 14px;
+  border-radius: 0 100% 0 100%;
+  background: var(--swatch-pink);
+  animation: petal-burst var(--t) cubic-bezier(0.2, 0.7, 0.4, 1) forwards;
+}
+
+.burst-petal:nth-child(3n) {
+  background: var(--swatch-orange);
+}
+
+.burst-petal:nth-child(3n + 1) {
+  background: var(--swatch-yellow);
 }
 
 /* Buttons */
@@ -728,16 +802,6 @@ html.js:not(.invite-open) {
   background: var(--color-accent-hover);
 }
 
-.btn-gold {
-  color: var(--color-night);
-  background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
-  box-shadow: 0 12px 30px -10px rgba(230, 194, 122, 0.6);
-}
-
-.btn-gold:hover {
-  box-shadow: 0 16px 36px -10px rgba(230, 194, 122, 0.8);
-}
-
 .btn-outline {
   color: var(--color-accent);
   border-color: var(--color-accent);
@@ -760,7 +824,9 @@ html.js:not(.invite-open) {
 
 .section-tinted {
   max-width: none;
-  background: var(--color-tint);
+  background:
+    radial-gradient(rgba(184, 137, 59, 0.16) 1px, transparent 1.5px) 0 0 / 24px 24px,
+    var(--color-tint);
 }
 
 .section-tinted > * {
@@ -772,10 +838,25 @@ html.js:not(.invite-open) {
 .section h2 {
   margin-top: 0;
   margin-bottom: 2.5rem;
-  font-family: var(--font-serif);
-  font-size: clamp(2.4rem, 5.5vw, 3.4rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5vw, 2.9rem);
   font-weight: 500;
+  letter-spacing: 0.06em;
   color: var(--color-accent);
+}
+
+.section h2::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  margin: 0.9rem auto 0;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  transition: width 1.2s var(--ease-out) 0.4s;
+}
+
+.reveal.is-visible h2::after {
+  width: 130px;
 }
 
 .section-lead {
@@ -1014,7 +1095,7 @@ html.js:not(.invite-open) {
 
 .event-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   gap: 1.5rem;
 }
 
@@ -1024,6 +1105,37 @@ html.js:not(.invite-open) {
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+}
+
+.event-card,
+.info-card,
+.outfit {
+  --i: 0;
+}
+
+.event-card:nth-child(2),
+.info-card:nth-child(2) {
+  --i: 1;
+}
+
+.info-card:nth-child(3) {
+  --i: 2;
+}
+
+.info-card:nth-child(4) {
+  --i: 3;
+}
+
+.reveal.is-visible .event-card,
+.reveal.is-visible .info-card,
+.reveal.is-visible .outfit {
+  animation: card-in 0.9s var(--ease-out) backwards;
+  animation-delay: calc(var(--i) * 0.14s + 0.2s);
+}
+
+.event-card:hover,
+.info-card:hover {
+  border-color: var(--color-gold);
 }
 
 .event-card::before {
@@ -1079,6 +1191,19 @@ html.js:not(.invite-open) {
   margin-top: 2.5rem;
 }
 
+.event-grid-single {
+  grid-template-columns: minmax(0, 420px);
+  justify-content: center;
+}
+
+.event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
 /* Dress code */
 
 .wardrobe-toggle {
@@ -1131,8 +1256,13 @@ html.js:not(.invite-open) {
 
 .wardrobe {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(290px, 100%), 1fr));
   gap: 1.75rem;
+}
+
+.wardrobe-single {
+  grid-template-columns: minmax(0, 340px);
+  justify-content: center;
 }
 
 .outfit {
@@ -1296,7 +1426,7 @@ html.js:not(.invite-open) {
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
   gap: 1.5rem;
   text-align: left;
 }
@@ -1590,6 +1720,88 @@ html:has(.lightbox[open]) {
   color: var(--color-gold-light);
 }
 
+.footer-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--color-gold-light);
+  text-underline-offset: 4px;
+}
+
+/* Music: a small mute button in the corner */
+
+.music-toggle {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 110;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid rgba(230, 194, 122, 0.6);
+  border-radius: 50%;
+  background: rgba(31, 10, 16, 0.85);
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.6);
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-gold-light);
+  cursor: pointer;
+}
+
+.js:not(.invite-open) .music-toggle {
+  display: none;
+}
+
+/* a slash through the note while the music is off */
+.music-toggle:not(.is-playing)::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 2px;
+  background: var(--color-gold-light);
+  transform: rotate(-45deg);
+}
+
+.music-toggle.is-playing {
+  animation: seal-pulse 2.4s ease-in-out infinite;
+}
+
+.music-toggle:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 3px;
+}
+
+/* Sparkles: gold stars that follow the mouse and burst where you tap */
+
+.sparkle {
+  position: fixed;
+  z-index: 130;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size, 10px);
+  height: var(--size, 10px);
+  margin: calc(var(--size, 10px) / -2) 0 0 calc(var(--size, 10px) / -2);
+  background: var(--color-gold-light);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  pointer-events: none;
+  animation: sparkle-out 0.9s ease-out forwards;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    translate: 0 40px;
+  }
+}
+
+@keyframes sparkle-out {
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) rotate(180deg) scale(0);
+  }
+}
+
 /* Responsive */
 
 @media (min-width: 761px) {
@@ -1600,51 +1812,25 @@ html:has(.lightbox[open]) {
 }
 
 @media (max-width: 760px) {
-  .nav-toggle {
-    display: block;
-  }
-
-  .nav-links {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    gap: 0;
-    padding: 0.5rem 1.25rem 1.25rem;
-    background: var(--color-bg);
-    border-bottom: 1px solid var(--color-line);
-    display: none;
-  }
-
-  .nav-links.is-open {
-    display: flex;
-  }
-
-  .nav-links li {
-    width: 100%;
-    text-align: center;
-  }
-
-  .nav-links a {
-    display: block;
-    padding: 0.75rem 0;
-  }
-
-  .nav-links a::after {
-    display: none;
-  }
-
-  .nav-toggle[aria-expanded="true"] span:first-child {
-    transform: translateY(3.5px) rotate(45deg);
-  }
-
-  .nav-toggle[aria-expanded="true"] span:last-child {
-    transform: translateY(-3.5px) rotate(-45deg);
-  }
-
   .hero-card {
     padding: 3.5rem 1.25rem 2.75rem;
+    transform: none;
+    transform-style: flat;
+  }
+
+  /* no 3D depth on phones: it pushes Ganesh ji and the text off the arch */
+  .hero-stage {
+    perspective: none;
+  }
+
+  .hero-card > *,
+  .hero-card > .ganesh,
+  .hero-card h1 {
+    transform: none;
+  }
+
+  .hero-arch {
+    transform: none !important;
   }
 
   .hero-arch {
@@ -1723,6 +1909,78 @@ html:has(.lightbox[open]) {
     --card-w: 150px;
     --ring-r: 190px;
   }
+
+  .venue-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .hero-eyebrow,
+  .section-eyebrow {
+    letter-spacing: 0.18em;
+  }
+
+  .hero-place {
+    letter-spacing: 0.12em;
+  }
+
+  .lightbox {
+    padding: 0.75rem;
+  }
+
+  .lightbox-media {
+    width: min(86vw, 560px, calc(70dvh * 0.8));
+  }
+}
+
+@media (max-width: 400px) {
+  .hero {
+    padding-inline: 0.75rem;
+  }
+
+  .hero-card {
+    padding-inline: 0.75rem;
+  }
+
+  .countdown {
+    gap: 0.4rem;
+  }
+
+  .cd-unit {
+    min-width: 0;
+    flex: 1 1 0;
+    padding-inline: 0.25rem;
+  }
+
+  .cd-unit small {
+    letter-spacing: 0.1em;
+  }
+
+  .carousel {
+    --card-w: 130px;
+    --ring-r: 165px;
+  }
+
+  .event-card {
+    padding-inline: 1.1rem;
+  }
+}
+
+@media (max-height: 520px) {
+  .js .invite {
+    --seal: 76px;
+  }
+
+  .invite-seal {
+    font-size: 1.6rem;
+  }
+
+  .invite-hint {
+    display: none;
+  }
+
+  .door-ring {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1736,6 +1994,11 @@ html:has(.lightbox[open]) {
     transition: none;
   }
 
+  .music-toggle.is-playing,
+  .hero h1,
+  .reveal.is-visible .event-card,
+  .reveal.is-visible .info-card,
+  .reveal.is-visible .outfit,
   .hero-card,
   .js.invite-open .hero-card,
   .invite-seal,
@@ -1751,8 +2014,26 @@ html:has(.lightbox[open]) {
     transition: none;
   }
 
+  .section h2::after {
+    width: 130px;
+    transition: none;
+  }
+
+  .sparkle {
+    display: none;
+  }
+
   .invite-flap {
     transition: opacity 0.5s;
+  }
+
+  .is-scratched .scratch-text,
+  .invite-hint {
+    animation: none;
+  }
+
+  .scratch-canvas {
+    transition: none;
   }
 
   .invite-open .invite-flap-left,
