@@ -73,9 +73,12 @@ python3 -m http.server 8000
 - External links use `target="_blank" rel="noopener"`. Iframes need a `title` and `loading="lazy"`.
 - Placeholder content uses `.photo-placeholder` figures or "TBA" / "will be shared soon" text. Replace it only with real details the user provides. Never invent times, contacts, hotels or names.
 
+### Favicon
+- The S&A monogram icon (gold letters on an emerald circle) lives in the project root: `favicon.ico` (16/32/48), `favicon-16.png`, `favicon-32.png`, `apple-touch-icon.png` (180, opaque) and `icon-192.png` / `icon-512.png`. Every page links them with the right `../` prefix and sets `theme-color` to the deep emerald.
+
 ### Link previews (WhatsApp, etc.)
 - Each page has `og:` and `twitter:` meta tags in `<head>`: a title that starts with the event type, a description with the date, time and venue, and a 1200×630 image (`images/og-wedding.jpg`, `og-reception.jpg`, `og-events.jpg`, composed from the illustrations on ivory with a gold frame).
-- **The `og:image` and `twitter:image` values are relative paths. WhatsApp and most apps need an absolute `https://` URL**, so change them to `https://<live domain>/images/…` once the live address is known. Add `og:url` too.
+- The live site is **https://sweenal-ashay.pages.dev/** (Cloudflare). `og:image`, `twitter:image`, `og:url` and `canonical` use that full address, because WhatsApp and most apps ignore relative image paths. If the address ever changes, update those four tags on all three pages. WhatsApp caches previews, so test a changed link with a fresh one.
 - When an event's date, time or venue changes, update that page's `<title>`, `description`, `og:title`, `og:description` and `twitter:*` tags as well.
 
 ### Content consistency
