@@ -480,11 +480,11 @@ html.js:not(.invite-open) {
   content: "";
   position: absolute;
   z-index: -1;
-  top: -78px;
+  top: -71px;
   left: 50%;
-  width: 280px;
-  height: 280px;
-  margin-left: -140px;
+  width: 250px;
+  height: 250px;
+  margin-left: -125px;
   border-radius: 50%;
   background: repeating-conic-gradient(rgba(230, 194, 122, 0.28) 0 6deg, transparent 6deg 18deg);
   -webkit-mask: radial-gradient(circle, transparent 0 40%, #000 42%, transparent 70%);
@@ -493,8 +493,8 @@ html.js:not(.invite-open) {
 }
 
 .ganesh-medallion {
-  width: 124px;
-  height: 124px;
+  width: 108px;
+  height: 108px;
   margin: 0 auto 0.6rem;
   padding: 6px;
   border-radius: 50%;
@@ -2059,16 +2059,16 @@ html:has(.lightbox[open]) {
 
   /* a compact hero so the scratch card is on the first screen without scrolling */
   .ganesh-medallion {
-    width: 100px;
-    height: 100px;
+    width: 84px;
+    height: 84px;
     margin-bottom: 0.4rem;
   }
 
   .hero-card > .ganesh::before {
-    top: -66px;
-    width: 232px;
-    height: 232px;
-    margin-left: -116px;
+    top: -58px;
+    width: 200px;
+    height: 200px;
+    margin-left: -100px;
   }
 
   .ganesh-mantra {
