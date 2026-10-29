@@ -51,7 +51,7 @@ python3 -m http.server 8000
 
 ### CSS
 - Use the design tokens in `:root` (`--color-*`, `--font-*`, `--radius`, `--shadow`, `--max-width`). Don't hardcode new colours or fonts. If something new is genuinely needed, add a token.
-- Palette (emerald-theme branch): cream background, maroon accent (`--color-accent`), gold highlights (`--color-gold`, `--color-gold-light`), deep emerald hero, doors and footer (`--color-night`, `--color-night-2`; the same tokens were deep maroon on main), and blush for ladies / sage for gents (`--color-blush`, `--color-sage`).
+- Palette (emerald-theme branch): pale mint-ivory background (`--color-bg`, `--color-tint`), deep emerald accent (`--color-accent`) and dark areas (`--color-night`, `--color-night-2`), gold highlights (`--color-gold`, `--color-gold-light`), and blush for ladies / sage for gents. The maroon now only appears in the Varmala illustration and the photos. On `main` the same tokens are cream, maroon and deep maroon.
 - Put new rules under the matching `/* Section */` header. Mobile overrides go in the single `@media (max-width: 760px)` block.
 - Respect `prefers-reduced-motion`. New animations or transitions need to be disabled in that block.
 - Class names are lowercase and hyphenated (`event-card`, `day-heading`). State classes use an `is-` prefix (`is-open`, `is-visible`).

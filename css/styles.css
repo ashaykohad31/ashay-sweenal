@@ -5,13 +5,13 @@
 }
 
 :root {
-  --color-bg: #fbf6ee;
+  --color-bg: #f2f7f2;
   --color-surface: #ffffff;
-  --color-tint: #f4ebdd;
-  --color-text: #2b1a1d;
-  --color-muted: #6e5a5c;
-  --color-accent: #7a1f2b;
-  --color-accent-hover: #5e1621;
+  --color-tint: #e3eee5;
+  --color-text: #14261e;
+  --color-muted: #566a60;
+  --color-accent: #0f4a37;
+  --color-accent-hover: #0a3527;
   --color-gold: #b8893b;
   --color-gold-light: #e6c27a;
   --color-blush: #f7dde0;
@@ -21,7 +21,7 @@
   --color-whatsapp: #1b8f50;
   --color-night-2: #0f4a37;
   --color-on-dark: #f8eee0;
-  --color-line: rgba(122, 31, 43, 0.14);
+  --color-line: rgba(15, 74, 55, 0.16);
   --swatch-yellow: #f5c542;
   --swatch-orange: #f08a2c;
   --swatch-pink: #ec7a9c;
@@ -32,8 +32,8 @@
   --font-sans: "Jost", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --max-width: 1080px;
   --radius: 18px;
-  --shadow: 0 6px 30px rgba(74, 30, 20, 0.08);
-  --shadow-deep: 0 30px 60px -20px rgba(74, 30, 20, 0.35);
+  --shadow: 0 6px 30px rgba(7, 36, 27, 0.08);
+  --shadow-deep: 0 30px 60px -20px rgba(7, 36, 27, 0.35);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -276,7 +276,7 @@ html.js:not(.invite-open) {
   content: "";
   position: absolute;
   inset: 9px;
-  border: 1px dashed rgba(94, 22, 33, 0.5);
+  border: 1px dashed rgba(7, 36, 27, 0.5);
   border-radius: 50%;
 }
 
@@ -294,7 +294,7 @@ html.js:not(.invite-open) {
   margin: 0 0.05em;
   font-family: var(--font-script);
   font-weight: 400;
-  color: #5e1621;
+  color: var(--color-accent-hover);
 }
 
 .invite-seal:focus-visible {
@@ -857,7 +857,7 @@ html.js:not(.invite-open) {
 .btn-primary {
   color: #fff;
   background: var(--color-accent);
-  box-shadow: 0 10px 20px -10px rgba(122, 31, 43, 0.7);
+  box-shadow: 0 10px 20px -10px rgba(15, 74, 55, 0.7);
 }
 
 .btn-primary:hover {
@@ -1012,7 +1012,7 @@ html.js:not(.invite-open) {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #efe2d0, #e3cfc0);
+  background: linear-gradient(135deg, #e2ede4, #cfe0d4);
   border-radius: var(--radius);
   color: var(--color-muted);
   font-size: 0.875rem;
@@ -1179,7 +1179,7 @@ html.js:not(.invite-open) {
   width: min(100%, 260px);
   height: auto;
   background: var(--color-bg);
-  filter: drop-shadow(0 14px 18px rgba(74, 30, 20, 0.22));
+  filter: drop-shadow(0 14px 18px rgba(7, 36, 27, 0.22));
 }
 
 .moment-final .moment-text {
@@ -1286,7 +1286,7 @@ html.js:not(.invite-open) {
   width: min(100%, 200px);
   height: auto;
   margin: 0 auto 0.75rem;
-  filter: drop-shadow(0 10px 14px rgba(74, 30, 20, 0.22));
+  filter: drop-shadow(0 10px 14px rgba(7, 36, 27, 0.22));
 }
 
 .event-card > * {
@@ -1468,7 +1468,7 @@ html.js:not(.invite-open) {
   height: auto;
   margin-bottom: 1.1rem;
   border-radius: 90px 90px 12px 12px;
-  box-shadow: 0 14px 26px -14px rgba(74, 30, 20, 0.55);
+  box-shadow: 0 14px 26px -14px rgba(7, 36, 27, 0.55);
 }
 
 .outfit-face h3 {
