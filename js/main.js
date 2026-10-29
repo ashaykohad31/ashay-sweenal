@@ -731,7 +731,7 @@ if (calendarButton) {
     const lines = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
-      "PRODID:-//Sweenal and Ashay//Invitation//EN",
+      "PRODID:-//Ashay and Sweenal//Invitation//EN",
       "BEGIN:VEVENT",
       `UID:${utc(start)}@sweenal-ashay`,
       `DTSTAMP:${stamp}`,
