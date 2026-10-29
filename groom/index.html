@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta
+      name="description"
+      content="Sweenal & Ashay's wedding reception — 14 December 2026, 7:00 PM."
+    />
+    <title>Wedding Reception · Sweenal & Ashay</title>
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Cinzel:wght@500;600&family=Pinyon+Script&family=Jost:wght@400;500&family=Tiro+Devanagari+Sanskrit&display=swap"
+    />
+    <link rel="preload" as="image" href="../images/ganeshji.jpg" />
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <div class="invite is-loading" id="invite">
+      <div class="invite-flap invite-flap-left" aria-hidden="true">
+        <span class="door-panel"></span>
+        <span class="door-studs"></span>
+        <span class="door-hinges"></span>
+        <span class="door-ring"></span>
+      </div>
+      <div class="invite-flap invite-flap-right" aria-hidden="true">
+        <span class="door-panel"></span>
+        <span class="door-studs"></span>
+        <span class="door-hinges"></span>
+        <span class="door-ring"></span>
+      </div>
+      <div class="invite-front">
+        <button type="button" class="invite-seal" id="invite-seal" aria-label="Open the invitation from Sweenal and Ashay">
+          S<span>&amp;</span>A
+        </button>
+        <p class="invite-hint" aria-hidden="true">Loading…</p>
+      </div>
+    </div>
+
+    <main>
+      <section class="hero" id="home">
+        <canvas class="hero-canvas" id="petals" aria-hidden="true"></canvas>
+        <div class="hero-stage">
+          <div class="hero-card" id="hero-card">
+            <div class="hero-arch" aria-hidden="true"></div>
+            <div class="ganesh">
+              <div class="ganesh-medallion">
+                <img src="../images/ganeshji.jpg" width="413" height="440"
+                  alt="Lord Ganesha seated on a pink lotus" />
+              </div>
+              <p class="ganesh-mantra" lang="sa">॥ श्री गणेशाय नमः ॥</p>
+            </div>
+            <p class="hero-eyebrow">The wedding reception of</p>
+            <h1>
+              Sweenal
+              <span class="hero-amp">&amp;</span>
+              Ashay
+            </h1>
+            <div class="hero-sub-row">
+              <img class="hero-art" src="../images/reception-couple.png" width="524" height="560" decoding="async" alt="" />
+              <p class="hero-sub">welcome you to celebrate</p>
+              <img class="hero-art hero-art-flip" src="../images/reception-couple.png" width="524" height="560" decoding="async" alt="" />
+            </div>
+            <div class="divider" aria-hidden="true"><span>✦</span></div>
+            <p class="hero-date">14 December 2026 &middot; 7:00 PM</p>
+            <p class="hero-place">Venue to be shared</p>
+            <div class="scratch" id="scratch" role="button" tabindex="0" aria-label="Scratch the gold foil to reveal a message. Press Enter to reveal it.">
+              <p class="scratch-text"><small>Join us in our joy</small>You are invited</p>
+              <canvas class="scratch-canvas" id="scratch-canvas" aria-hidden="true"></canvas>
+            </div>
+
+            <div class="countdown" id="countdown" data-end="2026-12-15T00:00:00+05:30" data-target="2026-12-14T19:00:00+05:30" aria-live="polite">
+              <div class="cd-unit"><span id="cd-days">--</span><small>Days</small></div>
+              <div class="cd-unit"><span id="cd-hours">--</span><small>Hours</small></div>
+              <div class="cd-unit"><span id="cd-mins">--</span><small>Minutes</small></div>
+              <div class="cd-unit"><span id="cd-secs">--</span><small>Seconds</small></div>
+            </div>
+          </div>
+        </div>
+        <a class="scroll-cue" href="#reception" aria-label="Scroll to the reception details"
+          ><span></span
+        ></a>
+      </section>
+
+      <section class="section reveal" id="reception">
+        <p class="section-eyebrow">You are invited to</p>
+        <h2>The Reception</h2>
+
+        <div class="event-day">
+          <h3 class="day-heading">Monday · 14 December 2026</h3>
+          <div class="event-grid event-grid-single">
+            <article class="event-card" data-tilt>
+              <img class="event-art" src="../images/reception-couple.png" width="524" height="560" loading="lazy" decoding="async" alt="" />
+              <p class="event-time">Evening · 7:00 PM</p>
+              <h4>Wedding Reception</h4>
+              <p class="event-theme">Designer &amp; sophisticated</p>
+              <p>Venue to be shared</p>
+              <p class="event-dress">Dress code: designer saree · formal suit or blazer</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="event-actions">
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="add-calendar"
+            data-title="Sweenal &amp; Ashay's Wedding Reception"
+            data-start="2026-12-14T19:00:00+05:30"
+            data-description="Wedding Reception. Dress code: designer saree · formal suit or blazer."
+            data-file="sweenal-ashay-reception.ics"
+          >
+            Add to calendar
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="share-invite"
+            data-title="Sweenal &amp; Ashay's Wedding Reception"
+            data-text="You are invited to Sweenal &amp; Ashay's wedding reception on 14 December 2026 at 7:00 PM."
+          >
+            Share
+          </button>
+        </div>
+        <p class="share-note" id="share-note" role="status"></p>
+      </section>
+
+      <section class="section section-tinted reveal" id="venue">
+        <p class="section-eyebrow">Where</p>
+        <h2>Venue</h2>
+        <div class="venue-card">
+          <h3>Reception venue</h3>
+          <p>The venue and a map will be shared here very soon. Until then, please reach out to the family.</p>
+          <a class="btn btn-outline" href="#contact">Ask for the venue</a>
+        </div>
+      </section>
+
+      <section class="section reveal" id="contact">
+        <p class="section-eyebrow">Get in touch</p>
+        <h2>Contact</h2>
+        <p class="section-lead">Questions about the reception or the way to the venue? Reach out to the family.</p>
+        <div class="info-grid contact-grid">
+          <div class="info-card" data-tilt>
+            <h3>Ganesh Kohad</h3>
+            <p class="contact-role">Father of the groom</p>
+            <p class="contact-number">+91 99706 25637</p>
+            <div class="contact-actions">
+              <a class="btn btn-primary" href="tel:+919970625637">Call</a>
+              <a
+                class="btn btn-whatsapp"
+                href="https://wa.me/919970625637?text=Hello%2C%20I%27m%20writing%20about%20Sweenal%20%26%20Ashay%27s%20wedding%20reception."
+                target="_blank"
+                rel="noopener"
+                >WhatsApp</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p class="footer-names">Sweenal <span>&amp;</span> Ashay</p>
+      <p>Wedding Reception · 14 December 2026 · 7:00 PM</p>
+      <p><a class="footer-link" href="../">&larr; The wedding invitation</a></p>
+    </footer>
+
+    <audio id="music" src="../audio/music.m4a" loop preload="none"></audio>
+    <button type="button" class="music-toggle" id="music-toggle" aria-pressed="false" aria-label="Play music">
+      <span aria-hidden="true">&#9834;</span>
+    </button>
+
+    <script src="../js/main.js"></script>
+  </body>
+</html>

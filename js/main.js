@@ -602,25 +602,28 @@ function showNote(message) {
 }
 
 if (calendarButton) {
+  // each page describes its own event in data-* attributes on the button
   calendarButton.addEventListener("click", () => {
+    const { start, title, description, location: place, file } = calendarButton.dataset;
     const stamp = new Date().toISOString().replace(/[-:]|\.\d{3}/g, "");
-    const ics = [
+    const utc = (iso) => new Date(iso).toISOString().replace(/[-:]|\.\d{3}/g, "");
+    const icsEscape = (text) => text.replace(/[,;]/g, "\\$&");
+    const lines = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
-      "PRODID:-//Sweenal and Ashay//Wedding//EN",
+      "PRODID:-//Sweenal and Ashay//Invitation//EN",
       "BEGIN:VEVENT",
-      "UID:wedding-2026-12-13@sweenal-ashay",
+      `UID:${utc(start)}@sweenal-ashay`,
       `DTSTAMP:${stamp}`,
-      "DTSTART:20261213T121500Z", // 5:45 PM IST
-      "SUMMARY:Sweenal & Ashay's Wedding",
-      "LOCATION:Queen's Land Celebration Lawn & Banquet\\, Nagpur\\, Maharashtra",
-      "DESCRIPTION:Varmala & Wedding. Dress code: lehenga or saree · suit, bandhgala or Jodhpuri.",
-      "END:VEVENT",
-      "END:VCALENDAR",
-    ].join("\r\n");
+      `DTSTART:${utc(start)}`,
+      `SUMMARY:${icsEscape(title)}`,
+    ];
+    if (place) lines.push(`LOCATION:${icsEscape(place)}`);
+    if (description) lines.push(`DESCRIPTION:${icsEscape(description)}`);
+    lines.push("END:VEVENT", "END:VCALENDAR");
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
-    link.download = "sweenal-ashay-wedding.ics";
+    link.href = URL.createObjectURL(new Blob([lines.join("\r\n")], { type: "text/calendar" }));
+    link.download = file;
     link.click();
     URL.revokeObjectURL(link.href);
     showNote("Opening your calendar…");
@@ -631,8 +634,8 @@ if (calendarButton) {
 if (shareButton) {
   shareButton.addEventListener("click", async () => {
     const data = {
-      title: "Sweenal & Ashay's Wedding",
-      text: "Sweenal & Ashay are getting married on 13 December 2026. You are invited!",
+      title: shareButton.dataset.title,
+      text: shareButton.dataset.text,
       url: location.href.split("#")[0],
     };
     try {

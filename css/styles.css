@@ -1312,6 +1312,11 @@ html.js:not(.invite-open) {
   filter: drop-shadow(0 10px 14px rgba(74, 30, 20, 0.22));
 }
 
+.event-link {
+  margin-top: 1rem;
+  padding: 0.6rem 1.4rem;
+}
+
 .event-card > * {
   transform: translateZ(30px);
 }
