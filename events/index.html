@@ -18,7 +18,7 @@
     <meta name="twitter:description" content="12–14 December 2026 · Haldi, Sangeet, Vidhi, Wedding &amp; Reception · Nagpur &amp; Wardha" />
     <meta name="twitter:image" content="../images/og-events.jpg" />
     <script>
-      document.documentElement.classList.add("js", "invite-open");
+      document.documentElement.classList.add("js");
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,6 +30,27 @@
     <link rel="stylesheet" href="../css/styles.css" />
   </head>
   <body>
+    <div class="invite is-loading" id="invite">
+      <div class="invite-flap invite-flap-left" aria-hidden="true">
+        <span class="door-panel"></span>
+        <span class="door-studs"></span>
+        <span class="door-hinges"></span>
+        <span class="door-ring"></span>
+      </div>
+      <div class="invite-flap invite-flap-right" aria-hidden="true">
+        <span class="door-panel"></span>
+        <span class="door-studs"></span>
+        <span class="door-hinges"></span>
+        <span class="door-ring"></span>
+      </div>
+      <div class="invite-front">
+        <button type="button" class="invite-seal" id="invite-seal" aria-label="Open the invitation from Sweenal and Ashay">
+          S<span>&amp;</span>A
+        </button>
+        <p class="invite-hint" aria-hidden="true">Loading…</p>
+      </div>
+    </div>
+
     <main>
       <section class="hero" id="home">
         <canvas class="hero-canvas" id="petals" aria-hidden="true"></canvas>

@@ -5,7 +5,7 @@ const finePointer = window.matchMedia("(pointer: fine)").matches;
 const invite = document.getElementById("invite");
 const pageParts = document.querySelectorAll("main, .site-footer");
 
-// the events page has no doors, so everything below tolerates a missing #invite
+// every page has the doors, but the guard keeps a missing #invite from breaking the rest
 if (invite) {
   pageParts.forEach((el) => (el.inert = true));
   document.getElementById("invite-seal").focus({ preventScroll: true });
@@ -16,7 +16,12 @@ function openInvite() {
   const root = document.documentElement;
   if (root.classList.contains("invite-open") || invite.classList.contains("is-loading")) return;
   root.classList.add("invite-open");
-  if (readMusicState() !== "off") playMusic();
+  if (readMusicState() !== "off") {
+    // carry on from where the other page's music stopped
+    const resumeAt = Number(readSaved("musicTime")) || 0;
+    if (resumeAt > 0 && music.currentTime < 1) music.currentTime = resumeAt;
+    playMusic();
+  }
   pageParts.forEach((el) => (el.inert = false));
   setTimeout(() => (invite.hidden = true), reduceMotion ? 600 : 2200);
 }
@@ -69,12 +74,16 @@ function capMusicVolume() {
   musicGain = context;
 }
 
-function readMusicState() {
+function readSaved(key) {
   try {
-    return sessionStorage.getItem("music");
+    return sessionStorage.getItem(key);
   } catch (e) {
     return null; // storage blocked: treat as no saved choice
   }
+}
+
+function readMusicState() {
+  return readSaved("music");
 }
 
 function saveMusic(key, value) {
@@ -115,14 +124,6 @@ musicToggle.addEventListener("click", () => {
 });
 
 window.addEventListener("pagehide", () => saveMusic("musicTime", String(music.currentTime)));
-
-// on the events page there are no doors, so pick the music up where the invitation left it
-if (!invite && readMusicState() === "on") {
-  music.currentTime = Number(sessionStorage.getItem("musicTime")) || 0;
-  playMusic();
-  // if the browser refused to start it, the first tap anywhere does
-  document.addEventListener("pointerdown", () => music.paused && readMusicState() === "on" && playMusic(), { once: true });
-}
 
 // Hero scratch card: rub away the gold foil to reveal "With love, you are invited"
 const hero = document.getElementById("home");
