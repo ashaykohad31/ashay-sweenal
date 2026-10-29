@@ -1937,13 +1937,6 @@ html:has(.lightbox[open]) {
   color: var(--color-gold-light);
 }
 
-.footer-link {
-  display: inline-block;
-  margin-top: 1rem;
-  color: var(--color-gold-light);
-  text-underline-offset: 4px;
-}
-
 /* Music: a small mute button in the corner */
 
 /* Sky shots: the firework canvas that main.js adds for a few seconds */
