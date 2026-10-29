@@ -52,7 +52,7 @@ python3 -m http.server 8000
 - **Loading:** the doors show "Loading…" until the fonts and the Ganesh ji photo are ready (4 seconds at most), then main.js quietly fetches the gallery photos and the music. Photos fade in once loaded via `is-loaded`.
 
 ### Mobile
-- The hero is kept compact on phones (names on one line, a smaller Ganesh ji medallion, tight spacing) so the **scratch card is on the first screen without scrolling**: its bottom edge was measured at about 520px on 360×640 up to 412×915 phones. Keep it that way when changing the hero; if you add something above the scratch card, re-check on a 360×640 screen.
+- The hero is kept compact on phones (names on one line, a small (70px) Ganesh ji medallion, tight spacing) so the **scratch card is on the first screen without scrolling**: its bottom edge was measured at about 520px on 360×640 up to 412×915 phones. Keep it that way when changing the hero; if you add something above the scratch card, re-check on a 360×640 screen.
 - Sections fade in through an `IntersectionObserver` with `threshold: 0` (not a ratio). A ratio threshold on a very tall section, tilted in 3D, never fired on phones and left the Story invisible. On phones `.reveal` just slides up (no 3D tilt).
 
 ### CSS
