@@ -651,21 +651,27 @@ html.js:not(.invite-open) {
 }
 
 .hosts-row {
-  display: flex;
-  justify-content: center;
-  gap: clamp(1rem, 5vw, 3rem);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 34rem;
+  margin: 0 auto;
 }
 
 .hosts-family {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.15rem;
-  padding: 0 clamp(0.5rem, 3vw, 1.5rem);
+  padding: 0 clamp(0.25rem, 2vw, 1rem);
+  text-align: center;
+}
+
+.hosts-family:only-child {
+  grid-column: 1 / -1;
 }
 
 .hosts-row .hosts-family + .hosts-family {
   border-left: 1px solid rgba(230, 194, 122, 0.4);
-  padding-left: clamp(1rem, 5vw, 3rem);
 }
 
 .hosts-family small {
@@ -2078,16 +2084,8 @@ html:has(.lightbox[open]) {
 }
 
 @media (max-width: 760px) {
-  .hosts-row {
-    gap: 0.5rem;
-  }
-
   .hosts-family {
     padding: 0 0.25rem;
-  }
-
-  .hosts-row .hosts-family + .hosts-family {
-    padding-left: 0.5rem;
   }
 
   .hosts-family small {
