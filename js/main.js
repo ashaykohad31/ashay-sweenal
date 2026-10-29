@@ -146,14 +146,121 @@ function burstPetals() {
   }
 }
 
+// Sky shots: one volley of fireworks from the bottom left and right corners, fired when the card is revealed
+function launchSkyShots() {
+  const sky = document.createElement("canvas");
+  sky.className = "skyshot-canvas";
+  sky.setAttribute("aria-hidden", "true");
+  document.body.appendChild(sky);
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  sky.width = w * dpr;
+  sky.height = h * dpr;
+  const g = sky.getContext("2d");
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const colors = ["#e6c27a", "#f2a03d", "#f7c948", "#e8708a", "#f4b6c2", "#ffffff"];
+  const pick = () => colors[Math.floor(Math.random() * colors.length)];
+  const scale = Math.min(w, h) / 700; // keeps the bursts in proportion on phones
+  const gravity = 520;
+  const rockets = [];
+  const sparks = [];
+
+  // three rockets from each side, a little apart in time, leaning in towards the middle
+  [-1, 1].forEach((side) => {
+    for (let i = 0; i < 3; i++) {
+      const apex = h * (0.42 + Math.random() * 0.25);
+      rockets.push({
+        x: side < 0 ? w * 0.04 : w * 0.96,
+        y: h,
+        vx: -side * w * (0.05 + Math.random() * 0.08),
+        vy: -Math.sqrt(2 * gravity * apex),
+        wait: i * 0.4 + Math.random() * 0.15,
+        color: pick(),
+      });
+    }
+  });
+
+  const burst = (x, y, color) => {
+    const count = 70 + Math.floor(Math.random() * 30);
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2 + Math.random() * 0.2;
+      const speed = (90 + Math.random() * 190) * scale;
+      sparks.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 0,
+        ttl: 1.1 + Math.random() * 0.8,
+        size: 1.5 + Math.random() * 1.5,
+        color: Math.random() < 0.7 ? color : pick(),
+      });
+    }
+  };
+
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    g.clearRect(0, 0, w, h);
+    g.globalCompositeOperation = "lighter";
+
+    rockets.forEach((r) => {
+      if (r.done) return;
+      if (r.wait > 0) {
+        r.wait -= dt;
+        return;
+      }
+      r.vy += gravity * dt;
+      r.x += r.vx * dt;
+      r.y += r.vy * dt;
+      // a short glowing tail behind the rocket
+      sparks.push({ x: r.x, y: r.y, vx: 0, vy: 30, life: 0, ttl: 0.35, size: 2, color: r.color });
+      if (r.vy >= -20) {
+        r.done = true;
+        burst(r.x, r.y, r.color);
+      }
+    });
+
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const s = sparks[i];
+      s.life += dt;
+      if (s.life >= s.ttl) {
+        sparks.splice(i, 1);
+        continue;
+      }
+      s.vx *= 0.985;
+      s.vy += gravity * 0.35 * dt;
+      s.x += s.vx * dt;
+      s.y += s.vy * dt;
+      g.globalAlpha = 1 - s.life / s.ttl;
+      g.fillStyle = s.color;
+      g.beginPath();
+      g.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+      g.fill();
+    }
+
+    if (rockets.some((r) => !r.done) || sparks.length) requestAnimationFrame(frame);
+    else sky.remove();
+  }
+  requestAnimationFrame(frame);
+}
+
 function revealInvite() {
   if (hero.classList.contains("is-scratched")) return;
   hero.classList.add("is-scratched");
   scratch.removeAttribute("aria-label");
   scratch.removeAttribute("role");
   scratch.removeAttribute("tabindex");
-  if (reduceMotion) drawPetals(false);
-  else burstPetals();
+  if (reduceMotion) {
+    drawPetals(false);
+  } else {
+    burstPetals();
+    launchSkyShots();
+  }
 }
 
 // gold foil over the text, rubbed away with a finger or mouse
