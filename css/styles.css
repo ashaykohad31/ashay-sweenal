@@ -1314,6 +1314,10 @@ html.js:not(.invite-open) {
   width: min(100%, 270px);
 }
 
+.event-art-tall {
+  width: min(100%, 170px);
+}
+
 .event-card > * {
   transform: translateZ(30px);
 }
