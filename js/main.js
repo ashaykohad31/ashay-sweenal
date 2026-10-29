@@ -265,7 +265,7 @@ function updateCountdown() {
 const countdownTimer = setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Hero: 3D petal field on a canvas (it starts falling once the scratch card is revealed), with the camera following the pointer
+// Petals: a 3D petal field on a screen-sized canvas (it starts falling once the scratch card is revealed and keeps falling down the whole page), with the camera following the pointer
 const heroCard = document.getElementById("hero-card");
 const canvas = document.getElementById("petals");
 const ctx = canvas.getContext("2d");
@@ -274,7 +274,6 @@ const camera = { x: 0, y: 0, tx: 0, ty: 0 };
 let petals = [];
 let canvasW = 0;
 let canvasH = 0;
-let heroVisible = true;
 
 function makePetal(anywhere) {
   return {
@@ -332,7 +331,7 @@ function drawPetals(step) {
     ctx.save();
     ctx.translate(sx, sy);
     ctx.rotate(p.spin);
-    ctx.globalAlpha = 0.25 + 0.65 * depth;
+    ctx.globalAlpha = 0.2 + 0.55 * depth;
 
     if (p.sparkle) {
       const twinkle = 0.5 + 0.5 * Math.sin(p.tumble * 2);
@@ -362,7 +361,7 @@ function drawPetals(step) {
 }
 
 function animatePetals() {
-  if (heroVisible && hero.classList.contains("is-scratched")) drawPetals(true);
+  if (hero.classList.contains("is-scratched")) drawPetals(true);
   requestAnimationFrame(animatePetals);
 }
 
@@ -370,25 +369,23 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
 if (!reduceMotion) {
-  new IntersectionObserver(([entry]) => {
-    heroVisible = entry.isIntersecting;
-  }).observe(hero);
   requestAnimationFrame(animatePetals);
 
   if (finePointer) {
+    // the petals' camera follows the pointer anywhere on the page
+    document.addEventListener("pointermove", (e) => {
+      camera.tx = (e.clientX / window.innerWidth - 0.5) * 2;
+      camera.ty = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    // the hero card still tilts toward the pointer while it is over the hero
     hero.addEventListener("pointermove", (e) => {
       const r = hero.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width - 0.5;
-      const py = (e.clientY - r.top) / r.height - 0.5;
-      camera.tx = px * 2;
-      camera.ty = py * 2;
-      heroCard.style.setProperty("--ry", `${px * 14}deg`);
-      heroCard.style.setProperty("--rx", `${-py * 10}deg`);
+      heroCard.style.setProperty("--ry", `${((e.clientX - r.left) / r.width - 0.5) * 14}deg`);
+      heroCard.style.setProperty("--rx", `${-((e.clientY - r.top) / r.height - 0.5) * 10}deg`);
     });
 
     hero.addEventListener("pointerleave", () => {
-      camera.tx = 0;
-      camera.ty = 0;
       heroCard.style.setProperty("--ry", "0deg");
       heroCard.style.setProperty("--rx", "0deg");
     });

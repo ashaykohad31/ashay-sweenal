@@ -398,11 +398,14 @@ html.js:not(.invite-open) {
     var(--color-night);
 }
 
+/* fixed to the screen, so the petals keep falling all the way down the page to the footer */
 .hero-canvas {
-  position: absolute;
+  position: fixed;
   inset: 0;
+  z-index: 6;
   width: 100%;
   height: 100%;
+  pointer-events: none;
   opacity: 0;
   transition: opacity 1.2s;
 }
@@ -2243,7 +2246,8 @@ html:has(.lightbox[open]) {
     transition: none;
   }
 
-  .sparkle {
+  .sparkle,
+  .hero-canvas {
     display: none;
   }
 
