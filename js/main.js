@@ -256,10 +256,15 @@ function revealInvite() {
   scratch.removeAttribute("role");
   scratch.removeAttribute("tabindex");
   if (reduceMotion) {
+    hero.classList.add("is-petalling");
     drawPetals(false);
   } else {
-    burstPetals();
+    // the sky shots go off first; the first one bursts about 1.3 seconds after launch, then the petals start
     launchSkyShots();
+    setTimeout(() => {
+      hero.classList.add("is-petalling");
+      burstPetals();
+    }, 1500);
   }
 }
 
@@ -372,7 +377,7 @@ function updateCountdown() {
 const countdownTimer = setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Petals: a 3D petal field on a screen-sized canvas (it starts falling once the scratch card is revealed and keeps falling down the whole page), with the camera following the pointer
+// Petals: a 3D petal field on a screen-sized canvas (it starts falling right after the sky shots, once the scratch card is revealed, and keeps falling down the whole page), with the camera following the pointer
 const heroCard = document.getElementById("hero-card");
 const canvas = document.getElementById("petals");
 const ctx = canvas.getContext("2d");
@@ -412,7 +417,7 @@ function resizeCanvas() {
     petals = Array.from({ length: count }, () => makePetal(true));
     petals.sort((a, b) => b.z - a.z); // draw far petals first
   }
-  if (reduceMotion && hero.classList.contains("is-scratched")) drawPetals(false);
+  if (reduceMotion && hero.classList.contains("is-petalling")) drawPetals(false);
 }
 
 function drawPetals(step) {
@@ -468,7 +473,7 @@ function drawPetals(step) {
 }
 
 function animatePetals() {
-  if (hero.classList.contains("is-scratched")) drawPetals(true);
+  if (hero.classList.contains("is-petalling")) drawPetals(true);
   requestAnimationFrame(animatePetals);
 }
 
