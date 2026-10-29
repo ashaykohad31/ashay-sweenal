@@ -6,6 +6,7 @@ Wedding website for **Sweenal & Ashay**: 12–13 December 2026, Queen's Land Cel
 
 - Plain HTML, CSS and JavaScript. There is no build step, no package manager, no framework and no tests.
 - `index.html`: the plain invitation: doors, hero (13 December 2026), The Wedding card (Varmala & Wedding, Sunday 13 December 2026, evening 5:45 PM) with a link to `/events/`, a dress code for that event only, plus Our Story, Venue (with map) and Memories. It deliberately leaves out the full event list, travel and FAQ, which live on `/events/`.
+- `groom/index.html`: the reception-only invitation at `/groom/` (the groom's family's Wedding Reception, Monday 14 December 2026, 7:00 PM, venue not yet known). It has the same doors, hero, scratch card, petals and music as the plain page, then the Reception card, a Venue section (placeholder until the venue is known) and the groom's father's contact. The Reception card on `/events/` links to it.
 - `events/index.html`: the full version at `/events/` (no doors; asset paths start with `../`): hero, story timeline, events for both days, the whole dress-code planner, venue, travel, memories, FAQ and footer. It sets `invite-open` on `<html>` itself so the hero entrance plays.
 - **Scope:** the site is only a wedding invitation and a place for memories. It collects nothing from guests: no RSVP, guest list, meal preferences or guestbook, and no backend. Don't add any of these unless the couple asks.
 - `css/styles.css`: all styles, grouped under `/* Section */` comment headers in page order, with `/* Responsive */` at the end
@@ -28,7 +29,7 @@ python3 -m http.server 8000
 
 ### General
 - Keep the site dependency-free. Don't add frameworks, bundlers, npm or CDN JS libraries unless asked.
-- Keep it to these two pages. A new section is a `<section class="section reveal" id="...">` inside `<main>`. Alternate `section-tinted` so the backgrounds keep switching.
+- Keep it to these three pages (`/`, `/events/`, `/groom/`). A new section is a `<section class="section reveal" id="...">` inside `<main>`. Alternate `section-tinted` so the backgrounds keep switching.
 - Each section follows the same heading pattern: `<p class="section-eyebrow">` → `<h2>` → content.
 
 ### 3D and motion
@@ -73,5 +74,5 @@ Event names, dates and the venue appear in several places, on both pages (`index
 
 ## Known gaps
 - The couple changed the Varmala & Wedding dress code for ladies from "lehenga only" to "lehenga or saree", and for men to "suit, bandhgala or Jodhpuri" (it differs from outfit_code.jpeg, which is now out of date on this point).
-- Event times are all set: Haldi 12:30 PM, Sangeet 6:30 PM (12 Dec); Vidhi 9:45 AM, Varmala & Wedding 5:45 PM (13 Dec); Wedding Reception 7:00 PM (date still unknown). Parking details, the Nashik trip date and the other events' times are still placeholders. Stay is available at the venue; the families' contacts (Ganesh Kohad, father of the groom, +91 99706 25637; Prabhakar Umredkar, father of the bride, +91 77578 85815) are in the Contact section with call and WhatsApp buttons.
-- The Wedding Reception is on `/events/` under "Date to be announced" (its time is 7:00 PM, but its date and venue are still unknown, so the group says "Date to be announced" and the card says "Venue to be shared"). The dress-code planner also lists Mehendi, which isn't in the Events schedule yet because its date is unknown. The planner's Carnival, Vaidik Wedding and Varmala map to Haldi, Vidhi and Varmala & Wedding.
+- Event times are all set: Haldi 12:30 PM, Sangeet 6:30 PM (12 Dec); Vidhi 9:45 AM, Varmala & Wedding 5:45 PM (13 Dec); Wedding Reception 7:00 PM (14 Dec). Parking details, the Nashik trip date and the other events' times are still placeholders. Stay is available at the venue; the families' contacts (Ganesh Kohad, father of the groom, +91 99706 25637; Prabhakar Umredkar, father of the bride, +91 77578 85815) are in the Contact section with call and WhatsApp buttons.
+- The Wedding Reception is on Monday 14 December 2026 at 7:00 PM, at a different venue that is still unknown (the Venue section on `/groom/` says it will be shared; add the address, a Get directions button and a map there when known). The dress-code planner also lists Mehendi, which isn't in the Events schedule yet because its date is unknown. The planner's Carnival, Vaidik Wedding and Varmala map to Haldi, Vidhi and Varmala & Wedding.
