@@ -1589,8 +1589,10 @@ html.js:not(.invite-open) {
   margin: 0;
   max-width: 26ch;
   font-family: var(--font-serif);
-  font-size: 1.15rem;
-  line-height: 1.45;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--color-text);
 }
 
