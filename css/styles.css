@@ -546,7 +546,10 @@ html.js:not(.invite-open) {
 }
 
 .hero h1 {
-  margin: 0.5rem 0;
+  /* the gold gradient only paints inside the element's box, so the script font's tails
+     (the y in Ashay, the flourishes at the sides) need padding to stay visible; the negative margins keep the layout as it was */
+  margin: calc(0.5rem - 0.08em) -0.15em calc(0.5rem - 0.35em);
+  padding: 0.08em 0.15em 0.35em;
   font-family: var(--font-script);
   font-size: clamp(3.6rem, 13vw, 7rem);
   font-weight: 400;

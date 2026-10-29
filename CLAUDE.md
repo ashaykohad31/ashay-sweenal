@@ -69,6 +69,11 @@ python3 -m http.server 8000
 - External links use `target="_blank" rel="noopener"`. Iframes need a `title` and `loading="lazy"`.
 - Placeholder content uses `.photo-placeholder` figures or "TBA" / "will be shared soon" text. Replace it only with real details the user provides. Never invent times, contacts, hotels or names.
 
+### Link previews (WhatsApp, etc.)
+- Each page has `og:` and `twitter:` meta tags in `<head>`: a title that starts with the event type, a description with the date, time and venue, and a 1200×630 image (`images/og-wedding.jpg`, `og-reception.jpg`, `og-events.jpg`, composed from the illustrations on ivory with a gold frame).
+- **The `og:image` and `twitter:image` values are relative paths. WhatsApp and most apps need an absolute `https://` URL**, so change them to `https://<live domain>/images/…` once the live address is known. Add `og:url` too.
+- When an event's date, time or venue changes, update that page's `<title>`, `description`, `og:title`, `og:description` and `twitter:*` tags as well.
+
 ### Content consistency
 Event names, dates and the venue appear in several places, on both pages (`index.html` and `events/index.html`; the countdown target is the `data-target` on `#countdown`, which differs per page): the `<meta description>`, `<title>`, hero, event cards, the dress-code cards, FAQ, footer and the countdown in `main.js`. When one changes, update all of them.
 
