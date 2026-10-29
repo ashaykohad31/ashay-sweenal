@@ -1658,7 +1658,7 @@ html.js:not(.invite-open) {
 
 .carousel {
   --card-w: 220px;
-  --ring-r: 290px;
+  --ring-r: 330px;
   height: calc(var(--card-w) * 1.25 + 4rem);
   perspective: 1400px;
   display: grid;
@@ -1704,7 +1704,7 @@ html.js:not(.invite-open) {
   box-shadow: var(--shadow);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transform: rotateY(calc(var(--i) * 72deg)) translateZ(var(--ring-r));
+  transform: rotateY(calc(var(--i) * 360deg / var(--n))) translateZ(var(--ring-r));
 }
 
 @keyframes carousel-spin {
@@ -2105,7 +2105,7 @@ html:has(.lightbox[open]) {
 
   .carousel {
     --card-w: 150px;
-    --ring-r: 190px;
+    --ring-r: 220px;
   }
 
   .venue-card {
@@ -2159,7 +2159,7 @@ html:has(.lightbox[open]) {
 
   .carousel {
     --card-w: 130px;
-    --ring-r: 165px;
+    --ring-r: 190px;
   }
 
   .event-card {
