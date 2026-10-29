@@ -1688,7 +1688,7 @@ html.js:not(.invite-open) {
 
 .carousel {
   --card-w: 220px;
-  --ring-r: 330px;
+  --ring-r: 300px;
   height: calc(var(--card-w) * 1.25 + 4rem);
   perspective: 1400px;
   display: grid;
@@ -2135,7 +2135,7 @@ html:has(.lightbox[open]) {
 
   .carousel {
     --card-w: 150px;
-    --ring-r: 220px;
+    --ring-r: 200px;
   }
 
   .venue-card {
@@ -2189,7 +2189,7 @@ html:has(.lightbox[open]) {
 
   .carousel {
     --card-w: 130px;
-    --ring-r: 190px;
+    --ring-r: 170px;
   }
 
   .event-card {
