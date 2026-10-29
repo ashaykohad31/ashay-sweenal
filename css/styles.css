@@ -398,11 +398,14 @@ html.js:not(.invite-open) {
     var(--color-night);
 }
 
+/* fixed to the screen, so the petals keep falling all the way down the page to the footer */
 .hero-canvas {
-  position: absolute;
+  position: fixed;
   inset: 0;
+  z-index: 6;
   width: 100%;
   height: 100%;
+  pointer-events: none;
   opacity: 0;
   transition: opacity 1.2s;
 }
@@ -977,11 +980,11 @@ html.js:not(.invite-open) {
   position: relative;
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transform-style: preserve-3d;
-  transition: transform 0.6s var(--ease-out), box-shadow 0.4s;
+  transition: transform 0.6s var(--ease-out), box-shadow 0.4s, translate 0.4s var(--ease-out);
 }
 
 [data-tilt].is-tilting {
-  transition: transform 0.1s linear, box-shadow 0.4s;
+  transition: transform 0.1s linear, box-shadow 0.4s, translate 0.4s var(--ease-out);
   box-shadow: var(--shadow-deep);
 }
 
@@ -1191,6 +1194,42 @@ html.js:not(.invite-open) {
 
 /* Events */
 
+/* Cards: a continuous gold border with a fine inner frame, like a printed invitation */
+
+.event-card,
+.info-card,
+.venue-card,
+.outfit-face {
+  --face-tint: var(--color-surface);
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(180deg, var(--face-tint) 0, var(--color-surface) 55%) padding-box,
+    linear-gradient(145deg, var(--color-gold-light), var(--color-gold) 40%, var(--color-gold-light) 70%, var(--color-gold)) border-box;
+}
+
+.event-card::before,
+.info-card::before,
+.venue-card::before,
+.outfit-face::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(184, 137, 59, 0.35);
+  border-radius: calc(var(--radius) - 7px);
+  pointer-events: none;
+}
+
+.event-card:hover,
+.info-card:hover,
+.outfit:hover .outfit-face {
+  box-shadow: 0 20px 40px -18px rgba(184, 137, 59, 0.6);
+}
+
+.event-card:hover,
+.info-card:hover {
+  translate: 0 -4px;
+}
+
 .couple-portrait {
   width: min(100%, 280px);
   margin: 0 auto 3rem;
@@ -1233,8 +1272,6 @@ html.js:not(.invite-open) {
 
 .event-card {
   padding: 2.25rem 1.5rem 2rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -1265,22 +1302,6 @@ html.js:not(.invite-open) {
   animation-delay: calc(var(--i) * 0.14s + 0.2s);
 }
 
-.event-card:hover,
-.info-card:hover {
-  border-color: var(--color-gold);
-}
-
-.event-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  border-radius: var(--radius) var(--radius) 0 0;
-  background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light), var(--color-gold));
-}
-
 .event-art {
   display: block;
   width: min(100%, 200px);
@@ -1294,10 +1315,11 @@ html.js:not(.invite-open) {
 }
 
 .event-card h4 {
-  margin: 0.25rem 0 0.5rem;
-  font-family: var(--font-serif);
-  font-size: 2rem;
+  margin: 0.9rem 0 0.4rem;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
   font-weight: 500;
+  letter-spacing: 0.04em;
   color: var(--color-accent);
 }
 
@@ -1307,10 +1329,16 @@ html.js:not(.invite-open) {
 }
 
 .event-time {
-  font-size: 0.8rem;
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  border: 1px solid rgba(184, 137, 59, 0.45);
+  border-radius: 999px;
+  background: rgba(184, 137, 59, 0.12);
+  font-size: 0.78rem;
+  font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-gold) !important;
+  color: var(--color-accent) !important;
 }
 
 .event-theme {
@@ -1321,8 +1349,21 @@ html.js:not(.invite-open) {
   color: var(--color-text) !important;
 }
 
+.event-theme::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin: 0.7rem auto 0.6rem;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+}
+
 .event-dress {
-  margin-top: 0.75rem !important;
+  margin-top: 1rem !important;
+  padding: 0.6rem 0.9rem;
+  border: 1px dashed rgba(184, 137, 59, 0.5);
+  border-radius: 10px;
+  background: var(--color-tint);
   font-style: italic;
   font-size: 0.95rem;
 }
@@ -1381,7 +1422,8 @@ html.js:not(.invite-open) {
 
 .wardrobe-toggle button[data-side="ladies"].is-active {
   color: var(--color-accent);
-  background: var(--color-blush);
+  background: var(--color-tint);
+  border: 1px solid var(--color-gold);
 }
 
 .wardrobe-toggle button[data-side="gents"].is-active {
@@ -1432,34 +1474,18 @@ html.js:not(.invite-open) {
   flex-direction: column;
   align-items: center;
   padding: 1.5rem 1.5rem 1.75rem;
-  border: 1px solid var(--color-line);
   border-radius: var(--radius);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   box-shadow: var(--shadow);
 }
 
-.outfit-face::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  border-radius: var(--radius) var(--radius) 0 0;
-  background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light), var(--color-gold));
-}
-
-.outfit:hover .outfit-face {
-  border-color: var(--color-gold);
-}
-
 .outfit-ladies {
-  background: linear-gradient(180deg, var(--color-blush) 0, var(--color-surface) 55%);
+  --face-tint: var(--color-blush);
 }
 
 .outfit-gents {
-  background: linear-gradient(180deg, var(--color-sage) 0, var(--color-surface) 55%);
+  --face-tint: var(--color-sage);
   transform: rotateY(180deg);
 }
 
@@ -1544,9 +1570,8 @@ html.js:not(.invite-open) {
 .venue-card {
   max-width: 720px;
   margin: 0 auto;
+  position: relative;
   padding: 2.5rem 2rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -1589,8 +1614,6 @@ html.js:not(.invite-open) {
 
 .info-card {
   padding: 1.75rem 1.5rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -2223,7 +2246,8 @@ html:has(.lightbox[open]) {
     transition: none;
   }
 
-  .sparkle {
+  .sparkle,
+  .hero-canvas {
     display: none;
   }
 
