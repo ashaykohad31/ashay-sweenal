@@ -123,6 +123,12 @@ musicToggle.addEventListener("click", () => {
   }
 });
 
+// the track plays once: when it ends the button goes back to "off", and the other pages won't start it again
+music.addEventListener("ended", () => {
+  saveMusic("music", "off");
+  showMusicState(false);
+});
+
 window.addEventListener("pagehide", () => saveMusic("musicTime", String(music.currentTime)));
 
 // Hero scratch card: rub away the gold foil to reveal "With love, you are invited"
@@ -665,7 +671,8 @@ const observer = new IntersectionObserver(
       }
     });
   },
-  { threshold: 0.08 }
+  // reveal as soon as any part is about to come on screen: a ratio threshold never fires for a very tall section on a phone
+  { threshold: 0, rootMargin: "0px 0px -8% 0px" }
 );
 
 document.querySelectorAll(".reveal, .moment").forEach((el) => observer.observe(el));

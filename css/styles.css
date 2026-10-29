@@ -967,7 +967,7 @@ html.js:not(.invite-open) {
 
 .reveal {
   opacity: 0;
-  transform: perspective(1200px) translateY(60px) rotateX(10deg);
+  transform: perspective(1200px) translateY(60px) rotateX(4deg);
   transform-origin: 50% 0;
   transition: opacity 1s var(--ease-out), transform 1s var(--ease-out);
 }
@@ -1185,7 +1185,6 @@ html.js:not(.invite-open) {
   width: min(100%, 260px);
   height: auto;
   background: var(--color-bg);
-  filter: drop-shadow(0 14px 18px rgba(7, 36, 27, 0.22));
 }
 
 .moment-final .moment-text {
@@ -2044,7 +2043,8 @@ html:has(.lightbox[open]) {
   /* a fixed-width column keeps the arch the same distance from both edges, whatever the content does */
   .hero {
     grid-template-columns: minmax(0, 1fr);
-    padding: 1.5rem 0.25rem 2.5rem;
+    align-items: start;
+    padding: 0.75rem 0.25rem 2.5rem;
   }
 
   .hero-stage {
@@ -2052,9 +2052,72 @@ html:has(.lightbox[open]) {
   }
 
   .hero-card {
-    padding: 5rem 2.25rem 2.75rem;
+    padding: 3.25rem 2.25rem 1.75rem;
     transform: none;
     transform-style: flat;
+  }
+
+  /* a compact hero so the scratch card is on the first screen without scrolling */
+  .ganesh-medallion {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 0.4rem;
+  }
+
+  .hero-card > .ganesh::before {
+    top: -66px;
+    width: 232px;
+    height: 232px;
+    margin-left: -116px;
+  }
+
+  .ganesh-mantra {
+    font-size: 0.95rem;
+  }
+
+  .hero-eyebrow {
+    margin-bottom: 0.15rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 11.5vw, 3.4rem);
+  }
+
+  .hero-amp {
+    display: inline;
+    margin: 0 0.1em;
+  }
+
+  .hero-sub-row {
+    margin-top: 0;
+  }
+
+  .hero-art {
+    width: clamp(38px, 11vw, 50px);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+  }
+
+  .divider {
+    margin: 0.7rem auto;
+  }
+
+  .hero-date {
+    font-size: 1.2rem;
+  }
+
+  .hero-place {
+    margin-bottom: 0.9rem;
+    font-size: 0.75rem;
+  }
+
+  .scratch {
+    height: 4rem;
+    margin-bottom: 1rem;
   }
 
   /* no 3D depth on phones: it pushes Ganesh ji and the text off the arch */
@@ -2075,6 +2138,19 @@ html:has(.lightbox[open]) {
   /* the top radius is exactly half the card's width (100vw minus the hero's side padding), so the top is a true semicircle */
   .hero-arch {
     border-radius: calc(50vw - 0.25rem) calc(50vw - 0.25rem) var(--radius) var(--radius);
+  }
+
+  .music-toggle {
+    right: 0.6rem;
+    bottom: 0.6rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  /* a tall section tilted in 3D measures far bigger than it is; on phones just slide it up */
+  .reveal {
+    transform: translateY(40px);
   }
 
   .cd-unit {
