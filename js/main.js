@@ -123,8 +123,19 @@ musicToggle.addEventListener("click", () => {
   }
 });
 
-// the track plays once: when it ends the button goes back to "off", and the other pages won't start it again
+// the track plays three times in all: each time it ends it starts again until the count is reached, then the
+// button goes back to "off" and the other pages won't start it again (a tap plays it from the start)
+const musicPlays = 3;
+
 music.addEventListener("ended", () => {
+  const played = (Number(readSaved("musicPlayed")) || 0) + 1;
+  if (played < musicPlays) {
+    saveMusic("musicPlayed", String(played));
+    music.currentTime = 0;
+    playMusic();
+    return;
+  }
+  saveMusic("musicPlayed", "0");
   saveMusic("music", "off");
   showMusicState(false);
 });
