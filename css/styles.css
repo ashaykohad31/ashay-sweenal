@@ -492,7 +492,7 @@ html.js:not(.invite-open) {
   position: relative;
   padding: 3.25rem clamp(1.5rem, 6vw, 4.5rem) 3.5rem;
   transform-style: preserve-3d;
-  transform: rotateX(var(--rx, calc(var(--ty, 0) * -5deg))) rotateY(var(--ry, calc(var(--tx, 0) * 5deg)));
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.6s var(--ease-out);
   animation: hero-enter 1.6s var(--ease-out) backwards;
 }
@@ -1175,24 +1175,6 @@ html.js:not(.invite-open) {
   opacity: 1;
 }
 
-/* Phone motion (main.js sets --tx / --ty from the phone's tilt): only the hero floats; everything below it stays flat */
-.is-floating .hero-card {
-  transition: none;
-}
-
-.is-floating .hero h1 {
-  translate: calc(var(--tx, 0) * 5px) calc(var(--ty, 0) * 4px);
-}
-
-.is-floating .hero-art {
-  translate: calc(var(--tx, 0) * 4px) calc(var(--ty, 0) * 3px);
-}
-
-.is-floating .hero::before {
-  translate: calc(var(--tx, 0) * -14px) calc(var(--ty, 0) * -14px);
-}
-
-
 /* Story: a timeline whose line draws itself as you scroll */
 
 .photo-placeholder {
@@ -1521,6 +1503,8 @@ html.js:not(.invite-open) {
   height: 190px;
   margin: 0 auto 0.75rem;
   object-fit: contain;
+  /* main.js sets scale and opacity from the scroll position, so the picture grows as it comes into view */
+  transform-origin: 50% 85%;
   filter: drop-shadow(0 10px 14px rgba(7, 36, 27, 0.22));
 }
 
@@ -2274,8 +2258,7 @@ html:has(.lightbox[open]) {
 
   .hero-card {
     padding: 3.25rem 2.25rem 1.75rem;
-    /* the arch, Ganesh ji and the text tilt together as one flat plane, so nothing separates from the arch */
-    transform: perspective(900px) rotateX(calc(var(--ty, 0) * -5deg)) rotateY(calc(var(--tx, 0) * 5deg));
+    transform: none;
     transform-style: flat;
   }
 

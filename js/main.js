@@ -16,7 +16,6 @@ function openInvite() {
   const root = document.documentElement;
   if (root.classList.contains("invite-open") || invite.classList.contains("is-loading")) return;
   root.classList.add("invite-open");
-  startMotion(); // iPhones only allow motion access from inside a tap, so it is asked for here
   if (readMusicState() !== "off") {
     // carry on from where the other page's music stopped
     const resumeAt = Number(readSaved("musicTime")) || 0;
@@ -545,59 +544,36 @@ if (finePointer && !reduceMotion) {
   });
 }
 
-// Phone motion: when the phone is tilted the whole page floats a little toward that side. main.js only sets
-// --tx / --ty (-1 to 1); the CSS turns them into a 3D tilt on the cards and a drift on the hero and headings,
-// and the falling petals lean the same way. It only runs on touch screens and never under reduced motion;
-// iPhones ask for motion access once (from the tap on the seal), and without it the page just stays still.
-let motionOn = false;
+// Event cards: each illustration grows from small to full size as its card scrolls up the screen (and
+// shrinks back when scrolled back down), so it follows the scrolling instead of just fading in
+const eventArt = document.querySelectorAll(".event-art");
 
-function startMotion() {
-  if (motionOn || reduceMotion || finePointer || !("DeviceOrientationEvent" in window)) return;
-  const begin = () => {
-    motionOn = true;
-    document.documentElement.classList.add("is-floating");
-    window.addEventListener("deviceorientation", onTilt);
-    requestAnimationFrame(floatFrame);
+if (eventArt.length && !reduceMotion) {
+  let zoomQueued = false;
+
+  const zoomEventArt = () => {
+    zoomQueued = false;
+    const vh = window.innerHeight;
+    eventArt.forEach((art) => {
+      const box = art.getBoundingClientRect();
+      const centre = box.top + box.height / 2;
+      // 0 as the illustration enters at the bottom of the screen, 1 once it is in the middle
+      const progress = Math.min(1, Math.max(0, (vh * 0.95 - centre) / (vh * 0.45)));
+      const eased = 1 - Math.pow(1 - progress, 3);
+      art.style.scale = (0.4 + 0.6 * eased).toFixed(3);
+      art.style.opacity = (0.25 + 0.75 * Math.min(1, progress * 1.6)).toFixed(3);
+    });
   };
-  if (typeof DeviceOrientationEvent.requestPermission === "function") {
-    DeviceOrientationEvent.requestPermission()
-      .then((answer) => answer === "granted" && begin())
-      .catch(() => {});
-  } else {
-    begin();
-  }
-}
 
-const tilt = { x: 0, y: 0, tx: 0, ty: 0, baseX: null, baseY: null };
+  const queueZoom = () => {
+    if (zoomQueued) return;
+    zoomQueued = true;
+    requestAnimationFrame(zoomEventArt);
+  };
 
-function onTilt(event) {
-  if (event.gamma == null || event.beta == null) return;
-  const upright = !window.screen.orientation || window.screen.orientation.angle === 0;
-  if (!upright) {
-    tilt.tx = 0;
-    tilt.ty = 0;
-    return;
-  }
-  // measured from where the phone was held a moment ago, so any way of holding it works
-  if (tilt.baseX === null) {
-    tilt.baseX = event.gamma;
-    tilt.baseY = event.beta;
-  }
-  tilt.baseX += (event.gamma - tilt.baseX) * 0.004;
-  tilt.baseY += (event.beta - tilt.baseY) * 0.004;
-  tilt.tx = Math.max(-1, Math.min(1, (event.gamma - tilt.baseX) / 18));
-  tilt.ty = Math.max(-1, Math.min(1, (event.beta - tilt.baseY) / 18));
-}
-
-function floatFrame() {
-  tilt.x += (tilt.tx - tilt.x) * 0.08;
-  tilt.y += (tilt.ty - tilt.y) * 0.08;
-  const style = document.documentElement.style;
-  style.setProperty("--tx", tilt.x.toFixed(3));
-  style.setProperty("--ty", tilt.y.toFixed(3));
-  camera.tx = tilt.x;
-  camera.ty = tilt.y;
-  requestAnimationFrame(floatFrame);
+  window.addEventListener("scroll", queueZoom, { passive: true });
+  window.addEventListener("resize", queueZoom);
+  zoomEventArt();
 }
 
 // Dress code: flip every outfit card between ladies and gentlemen
