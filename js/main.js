@@ -544,38 +544,6 @@ if (finePointer && !reduceMotion) {
   });
 }
 
-// Event cards: each illustration grows from small to full size as its card scrolls up the screen (and
-// shrinks back when scrolled back down), so it follows the scrolling instead of just fading in
-const eventArt = document.querySelectorAll(".event-art");
-
-if (eventArt.length && !reduceMotion) {
-  let zoomQueued = false;
-
-  const zoomEventArt = () => {
-    zoomQueued = false;
-    const vh = window.innerHeight;
-    eventArt.forEach((art) => {
-      const box = art.getBoundingClientRect();
-      const centre = box.top + box.height / 2;
-      // 0 as the illustration enters at the bottom of the screen, 1 once it is in the middle
-      const progress = Math.min(1, Math.max(0, (vh * 0.95 - centre) / (vh * 0.45)));
-      const eased = 1 - Math.pow(1 - progress, 3);
-      art.style.scale = (0.4 + 0.6 * eased).toFixed(3);
-      art.style.opacity = (0.25 + 0.75 * Math.min(1, progress * 1.6)).toFixed(3);
-    });
-  };
-
-  const queueZoom = () => {
-    if (zoomQueued) return;
-    zoomQueued = true;
-    requestAnimationFrame(zoomEventArt);
-  };
-
-  window.addEventListener("scroll", queueZoom, { passive: true });
-  window.addEventListener("resize", queueZoom);
-  zoomEventArt();
-}
-
 // Dress code: flip every outfit card between ladies and gentlemen
 const wardrobe = document.getElementById("wardrobe");
 const sideButtons = document.querySelectorAll(".wardrobe-toggle button");

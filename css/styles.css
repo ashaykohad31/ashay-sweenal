@@ -1270,6 +1270,7 @@ html.js:not(.invite-open) {
   max-width: 300px;
   border-radius: 150px 150px var(--radius) var(--radius);
   box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
 .moment .photo-placeholder img {
@@ -1277,6 +1278,12 @@ html.js:not(.invite-open) {
   height: 100%;
   object-fit: cover;
   border-radius: inherit;
+  /* the same slow zoom as the event illustrations, kept inside the arched frame */
+  animation: art-zoom 9s ease-in-out infinite alternate;
+}
+
+.moment:nth-child(even) .photo-placeholder img {
+  animation-delay: -4.5s;
 }
 
 /* photos fade in once loaded (main.js adds is-loaded) */
@@ -1503,9 +1510,23 @@ html.js:not(.invite-open) {
   height: 190px;
   margin: 0 auto 0.75rem;
   object-fit: contain;
-  /* main.js sets scale and opacity from the scroll position, so the picture grows as it comes into view */
   transform-origin: 50% 85%;
   filter: drop-shadow(0 10px 14px rgba(7, 36, 27, 0.22));
+  animation: art-zoom 7s ease-in-out infinite alternate;
+}
+
+/* a slow, smooth zoom in and out, a little out of step from card to card */
+.event-card:nth-child(2) .event-art {
+  animation-delay: -3.5s;
+}
+
+@keyframes art-zoom {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 1.1;
+  }
 }
 
 .event-link {
@@ -2532,6 +2553,8 @@ html:has(.lightbox[open]) {
   .js.invite-open .hero::before,
   .js.invite-open .hero::after,
   .js.invite-open .hero-stage::before,
+  .event-art,
+  .moment .photo-placeholder img,
   .hero-card,
   .js.invite-open .hero-card,
   .invite-seal,
