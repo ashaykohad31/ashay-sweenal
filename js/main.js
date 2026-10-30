@@ -16,6 +16,7 @@ function openInvite() {
   const root = document.documentElement;
   if (root.classList.contains("invite-open") || invite.classList.contains("is-loading")) return;
   root.classList.add("invite-open");
+  startMotion(); // iPhones only allow motion access from inside a tap, so it is asked for here
   if (readMusicState() !== "off") {
     // carry on from where the other page's music stopped
     const resumeAt = Number(readSaved("musicTime")) || 0;
@@ -333,7 +334,7 @@ function scratchTo(event) {
   scratchCtx.lineTo(x, y);
   scratchCtx.stroke();
   last = { x, y };
-  if (++strokes % 6 === 0 && scratchedShare() > 0.4) revealInvite();
+  if (++strokes % 6 === 0 && scratchedShare() > 0.3) revealInvite();
 }
 
 document.fonts.ready.then(paintFoil);
@@ -542,6 +543,61 @@ if (finePointer && !reduceMotion) {
       el.classList.remove("is-tilting");
     });
   });
+}
+
+// Phone motion: when the phone is tilted the whole page floats a little toward that side. main.js only sets
+// --tx / --ty (-1 to 1); the CSS turns them into a 3D tilt on the cards and a drift on the hero and headings,
+// and the falling petals lean the same way. It only runs on touch screens and never under reduced motion;
+// iPhones ask for motion access once (from the tap on the seal), and without it the page just stays still.
+let motionOn = false;
+
+function startMotion() {
+  if (motionOn || reduceMotion || finePointer || !("DeviceOrientationEvent" in window)) return;
+  const begin = () => {
+    motionOn = true;
+    document.documentElement.classList.add("is-floating");
+    window.addEventListener("deviceorientation", onTilt);
+    requestAnimationFrame(floatFrame);
+  };
+  if (typeof DeviceOrientationEvent.requestPermission === "function") {
+    DeviceOrientationEvent.requestPermission()
+      .then((answer) => answer === "granted" && begin())
+      .catch(() => {});
+  } else {
+    begin();
+  }
+}
+
+const tilt = { x: 0, y: 0, tx: 0, ty: 0, baseX: null, baseY: null };
+
+function onTilt(event) {
+  if (event.gamma == null || event.beta == null) return;
+  const upright = !window.screen.orientation || window.screen.orientation.angle === 0;
+  if (!upright) {
+    tilt.tx = 0;
+    tilt.ty = 0;
+    return;
+  }
+  // measured from where the phone was held a moment ago, so any way of holding it works
+  if (tilt.baseX === null) {
+    tilt.baseX = event.gamma;
+    tilt.baseY = event.beta;
+  }
+  tilt.baseX += (event.gamma - tilt.baseX) * 0.004;
+  tilt.baseY += (event.beta - tilt.baseY) * 0.004;
+  tilt.tx = Math.max(-1, Math.min(1, (event.gamma - tilt.baseX) / 18));
+  tilt.ty = Math.max(-1, Math.min(1, (event.beta - tilt.baseY) / 18));
+}
+
+function floatFrame() {
+  tilt.x += (tilt.tx - tilt.x) * 0.08;
+  tilt.y += (tilt.ty - tilt.y) * 0.08;
+  const style = document.documentElement.style;
+  style.setProperty("--tx", tilt.x.toFixed(3));
+  style.setProperty("--ty", tilt.y.toFixed(3));
+  camera.tx = tilt.x;
+  camera.ty = tilt.y;
+  requestAnimationFrame(floatFrame);
 }
 
 // Dress code: flip every outfit card between ladies and gentlemen
