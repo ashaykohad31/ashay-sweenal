@@ -10,6 +10,29 @@ if (invite) {
   pageParts.forEach((el) => (el.inert = true));
   document.getElementById("invite-seal").focus({ preventScroll: true });
   invite.addEventListener("click", openInvite);
+
+  // gold sparkles twinkle across the doors, with a ring of larger ones around the seal
+  if (!reduceMotion) {
+    const front = invite.querySelector(".invite-front");
+    const spark = (x, y, size) => {
+      const star = document.createElement("span");
+      star.className = "door-spark";
+      star.setAttribute("aria-hidden", "true");
+      star.style.setProperty("--x", `${x}%`);
+      star.style.setProperty("--y", `${y}%`);
+      star.style.setProperty("--size", `${size}px`);
+      star.style.setProperty("--dur", `${1.8 + Math.random() * 1.8}s`);
+      star.style.setProperty("--delay", `${(Math.random() * 4).toFixed(2)}s`);
+      front.prepend(star);
+    };
+    for (let i = 0; i < 30; i++) {
+      spark(4 + Math.random() * 92, 4 + Math.random() * 92, 9 + Math.random() * 12);
+    }
+    for (let i = 0; i < 8; i++) {
+      const angle = (i / 8) * Math.PI * 2 + 0.4;
+      spark(50 + Math.cos(angle) * 15 * 0.62, 50 + Math.sin(angle) * 15, 16 + Math.random() * 10);
+    }
+  }
 }
 
 function openInvite() {
