@@ -1371,7 +1371,7 @@ html.js:not(.invite-open) {
   --face-tint: var(--color-surface);
   border: 1.5px solid transparent;
   background:
-    linear-gradient(180deg, var(--face-tint) 0, var(--color-surface) 55%) padding-box,
+    linear-gradient(180deg, var(--face-tint) 0, var(--face-base, var(--color-surface)) 70%) padding-box,
     linear-gradient(145deg, var(--color-gold-light), var(--color-gold) 40%, var(--color-gold-light) 70%, var(--color-gold)) border-box;
 }
 
@@ -1385,6 +1385,32 @@ html.js:not(.invite-open) {
   border: 1px solid rgba(184, 137, 59, 0.35);
   border-radius: calc(var(--radius) - 7px);
   pointer-events: none;
+}
+
+/* each event card takes the colours of its illustration */
+.event-haldi {
+  --face-tint: #ffe08a;
+  --face-base: #fff3c9;
+}
+
+.event-sangeet {
+  --face-tint: #cfe3cf;
+  --face-base: #eaf3e8;
+}
+
+.event-vidhi {
+  --face-tint: #fbcfa6;
+  --face-base: #fdebd8;
+}
+
+.event-varmala {
+  --face-tint: #f3c4c4;
+  --face-base: #fae6e2;
+}
+
+.event-reception {
+  --face-tint: #cfd9ec;
+  --face-base: #eceff7;
 }
 
 .event-card:hover,
@@ -1538,7 +1564,7 @@ html.js:not(.invite-open) {
   padding: 0.6rem 0.9rem;
   border: 1px dashed rgba(184, 137, 59, 0.5);
   border-radius: 10px;
-  background: var(--color-tint);
+  background: rgba(255, 255, 255, 0.6);
   font-style: italic;
   font-size: 0.85rem;
   text-transform: uppercase;
