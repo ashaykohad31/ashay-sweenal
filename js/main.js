@@ -146,9 +146,9 @@ musicToggle.addEventListener("click", () => {
   }
 });
 
-// the track plays three times in all: each time it ends it starts again until the count is reached, then the
+// the track plays twice in all: each time it ends it starts again until the count is reached, then the
 // button goes back to "off" and the other pages won't start it again (a tap plays it from the start)
-const musicPlays = 3;
+const musicPlays = 2;
 
 music.addEventListener("ended", () => {
   const played = (Number(readSaved("musicPlayed")) || 0) + 1;
