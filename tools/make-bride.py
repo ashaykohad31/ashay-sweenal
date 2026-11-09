@@ -123,6 +123,7 @@ for old, new in [
     ("12 to 13 December 2026: Haldi, Sangeet, Vidhi and Wedding, in Nagpur",
      "12 to 13 December 2026: Sangeet and Wedding, in Nagpur"),
     ('data-target="2026-12-12T12:30:00+05:30"', 'data-target="2026-12-12T18:30:00+05:30"'),
+    (f"{SITE}/images/share-bride-events.jpg", f"{SITE}/images/share-bride-sangeet.jpg"),
     (f'content="{SITE}/bride-events/"', f'content="{SITE}/bride-sangeet/"'),
     (f'href="{SITE}/bride-events/"', f'href="{SITE}/bride-sangeet/"'),
     ("Festivities begin on the morning of 12 December. If you're\n              travelling, we suggest arriving in Nagpur by the evening of 11\n              December.",
