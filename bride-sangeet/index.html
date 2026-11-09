@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="12–13 December 2026 · Sangeet &amp; Wedding · Nagpur" />
+    <title>Wedding Celebrations · Sweenal &amp; Ashay</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sweenal-ashay.pages.dev/bride-sangeet/" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:site_name" content="Sweenal &amp; Ashay" />
+    <meta property="og:title" content="Wedding Celebrations · Sweenal &amp; Ashay" />
+    <meta property="og:description" content="12–13 December 2026 · Sangeet &amp; Wedding · Nagpur" />
+    <meta property="og:image" content="https://sweenal-ashay.pages.dev/images/share-bride-events.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Wedding celebrations of Sweenal &amp; Ashay, 12 to 13 December 2026: Sangeet and Wedding, in Nagpur" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Wedding Celebrations · Sweenal &amp; Ashay" />
+    <meta name="twitter:description" content="12–13 December 2026 · Sangeet &amp; Wedding · Nagpur" />
+    <meta name="twitter:image" content="https://sweenal-ashay.pages.dev/images/share-bride-events.jpg" />
+    <link rel="canonical" href="https://sweenal-ashay.pages.dev/bride-sangeet/" />
+    <link rel="icon" href="../favicon-bride.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-bride-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-bride-16.png" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon-bride.png" />
+    <meta name="theme-color" content="#07241b" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Cinzel:wght@500;600&family=Pinyon+Script&family=Jost:wght@400;500&family=Tiro+Devanagari+Sanskrit&display=swap"
+    />
+    <link rel="preload" as="image" href="../images/ganeshji.jpg" />
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <div class="invite is-loading" id="invite">
+      <div class="invite-flap invite-flap-left" aria-hidden="true">
+        <span class="door-panel"></span>
+        <span class="door-studs"></span>
+        <span class="door-hinges"></span>
+        <span class="door-ring"></span>
+      </div>
+      <div class="invite-flap invite-flap-right" aria-hidden="true">
+        <span class="door-panel"></span>
+        <span class="door-studs"></span>
+        <span class="door-hinges"></span>
+        <span class="door-ring"></span>
+      </div>
+      <div class="invite-front">
+        <button type="button" class="invite-seal" id="invite-seal" aria-label="Open the invitation from Sweenal and Ashay">
+          S<span>&amp;</span>A
+        </button>
+        <p class="invite-hint" aria-hidden="true">Loading…</p>
+      </div>
+    </div>
+
+    <main>
+      <section class="hero" id="home">
+        <canvas class="hero-canvas" id="petals" aria-hidden="true"></canvas>
+        <div class="hero-stage">
+          <div class="hero-card" id="hero-card">
+            <div class="hero-arch" aria-hidden="true"></div>
+            <div class="ganesh">
+              <div class="ganesh-medallion">
+                <img src="../images/ganeshji.jpg" width="413" height="440"
+                  alt="Lord Ganesha seated on a pink lotus" />
+              </div>
+              <p class="ganesh-mantra" lang="sa">॥ श्री गणेशाय नमः ॥</p>
+            </div>
+            <p class="hero-eyebrow">Two hearts, one beginning</p>
+            <h1>
+              Sweenal
+              <span class="hero-amp">&amp;</span>
+              Ashay
+            </h1>
+            <div class="hero-sub-row">
+              <img class="hero-art" src="../images/varmala.png" width="616" height="640" decoding="async" alt="" />
+              <p class="hero-sub">are tying the knot</p>
+              <img class="hero-art hero-art-flip" src="../images/varmala.png" width="616" height="640" decoding="async" alt="" />
+            </div>
+            <div class="divider" aria-hidden="true"><span>✦</span></div>
+            <p class="hero-date">12 &amp; 13 December 2026</p>
+            <p class="hero-place">Nagpur, Maharashtra</p>
+            <div class="scratch" id="scratch" role="button" tabindex="0" aria-label="Scratch the gold foil to reveal a message. Press Enter to reveal it.">
+              <p class="scratch-text"><small>Join us in our joy</small>You are invited</p>
+              <canvas class="scratch-canvas" id="scratch-canvas" aria-hidden="true"></canvas>
+            </div>
+
+            <div class="countdown" id="countdown" data-end="2026-12-14T00:00:00+05:30" data-target="2026-12-12T18:30:00+05:30" aria-live="polite">
+              <div class="cd-unit"><span id="cd-days">--</span><small>Days</small></div>
+              <div class="cd-unit"><span id="cd-hours">--</span><small>Hours</small></div>
+              <div class="cd-unit"><span id="cd-mins">--</span><small>Minutes</small></div>
+              <div class="cd-unit"><span id="cd-secs">--</span><small>Seconds</small></div>
+            </div>
+
+            <div class="hosts">
+              <p class="hosts-lead">With the blessings of</p>
+              <div class="hosts-row">
+                <div class="hosts-family">
+                  <small>Daughter of</small>
+                  <strong>Mrs. Madhavi Umredkar</strong>
+                  <strong>Mr. Prabhakar Umredkar</strong>
+                </div>
+                <div class="hosts-family">
+                  <small>Son of</small>
+                  <strong>Mrs. Chanda Kohad</strong>
+                  <strong>Mr. Ganesh Kohad</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="scroll-cue" href="#story" aria-label="Scroll to Our Story"
+          ><span></span
+        ></a>
+      </section>
+
+      <section class="section reveal" id="story">
+        <p class="section-eyebrow">How it began</p>
+        <h2>Our Story</h2>
+        <p class="section-lead">A few moments that brought us to this day.</p>
+
+        <ol class="timeline" id="timeline">
+          <li class="moment">
+            <figure class="photo-placeholder" data-tilt>
+              <img src="../images/story/1.jpg" width="600" height="750" loading="lazy" decoding="async"
+                alt="The two of us laughing together at a cafe, with a heart-shaped frame behind us" />
+            </figure>
+            <div class="moment-text">
+              <p class="moment-date"><span class="moment-icon" aria-hidden="true">✉</span> 30 October 2025</p>
+              <h3>It all began with a message from Sweenal on Instagram.</h3>
+              <p>It all began when Sweenal sent the first message on Instagram. What started as a chat, turned into friendship, love, and now — forever.</p>
+            </div>
+          </li>
+          <li class="moment">
+            <figure class="photo-placeholder" data-tilt>
+              <img src="../images/story/2.jpg" width="600" height="750" loading="lazy" decoding="async"
+                alt="A close selfie of the two of us, dressed up and smiling" />
+            </figure>
+            <div class="moment-text">
+              <p class="moment-date"><span class="moment-icon" aria-hidden="true">☕</span> 12 November 2025</p>
+              <h3>After talking with our parents, we met for the first time at Bamboo House in Pune.</h3>
+              <p>After getting approval from our parents, we met for the very first time at Bamboo House, Pune — a meeting that turned a beautiful conversation into a beautiful connection.</p>
+            </div>
+          </li>
+          <li class="moment">
+            <figure class="photo-placeholder" data-tilt>
+              <img src="../images/story/3-engagement.jpg" width="600" height="750" loading="lazy" decoding="async"
+                alt="A close-up of our hands with the engagement rings, in embroidered and navy gold-motif outfits" />
+            </figure>
+            <div class="moment-text">
+              <p class="moment-date"><span class="moment-icon" aria-hidden="true">💍</span> 23 January 2026</p>
+              <h3>We got engaged, and the journey to forever officially began.</h3>
+              <p>After we met and our families met, we got that cute little feeling in our hearts — this is it! So we got engaged and officially began our beautiful journey to forever and ever.</p>
+            </div>
+          </li>
+          <li class="moment">
+            <figure class="photo-placeholder" data-tilt>
+              <img src="../images/story/4-sula.jpg" width="600" height="750" loading="lazy" decoding="async"
+                alt="The two of us hugging in front of a giant wine bottle" />
+            </figure>
+            <div class="moment-text">
+              <p class="moment-date"><span class="moment-icon" aria-hidden="true">🍇</span> Our first trip together</p>
+              <h3>Our first journey together took us to Nashik and Sula Wines.</h3>
+              <p>Our first journey together took us to the scenic vineyards of Nashik and Sula Wines, where we toasted to love and created our first beautiful memories together.</p>
+            </div>
+          </li>
+          <li class="moment moment-final">
+            <img class="moment-art" src="../images/varmala.png" width="616" height="640" loading="lazy" decoding="async" alt="" />
+            <div class="moment-text">
+              <p class="moment-date">13 December 2026</p>
+              <h3>Now we're ready to begin our next chapter, and we'd love for you to celebrate it in Nagpur.</h3>
+              <p>
+                After so many beautiful memories together, our forever is finally starting.
+                We are so excited to begin our next chapter as one. Come celebrate this
+                special new beginning with us in Nagpur. We can't wait to see you there!
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section section-tinted reveal" id="events">
+        <p class="section-eyebrow">Two days of celebration</p>
+        <h2>Events</h2>
+
+        <div class="event-day">
+          <h3 class="day-heading">Saturday · 12 December 2026</h3>
+          <div class="event-grid">
+            <article class="event-card event-sangeet" data-tilt>
+              <img class="event-art" src="../images/sangeet-couple.png" width="475" height="659" loading="lazy" decoding="async" alt="" />
+              <p class="event-time">Evening · 6:30 PM</p>
+              <h4>Sangeet</h4>
+              <p class="event-theme">Glitter &amp; glam</p>
+              <p>Queen's Land, Nagpur</p>
+              <p class="event-dress">Dress code: glitter &amp; party wear</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="event-day">
+          <h3 class="day-heading">Sunday · 13 December 2026</h3>
+          <div class="event-grid">
+            <article class="event-card event-varmala" data-tilt>
+              <img class="event-art" src="../images/varmala.png" width="616" height="640" loading="lazy" decoding="async" alt="" />
+              <p class="event-time">Evening · 5:26 PM</p>
+              <h4>Varmala &amp; Wedding</h4>
+              <p class="event-theme">Royal &amp; elegant</p>
+              <p>Queen's Land, Nagpur</p>
+              <p class="event-dress">Dress code: lehenga or saree · suit, bandhgala or Jodhpuri</p>
+            </article>
+          </div>
+        </div>
+
+        <a class="btn btn-outline events-more" href="#dress-code">See the wardrobe planner</a>
+      </section>
+
+      <section class="section reveal" id="dress-code">
+        <p class="section-eyebrow">Wedding wardrobe planner</p>
+        <h2>Dress Code</h2>
+        <p class="section-lead">
+          Here's a style guide to help you prepare for our wedding celebrations.
+        </p>
+
+        <div class="wardrobe-toggle" role="group" aria-label="Show outfits for">
+          <button type="button" class="is-active" aria-pressed="true" data-side="ladies">
+            <small>For our</small> Pretty Ladies
+          </button>
+          <button type="button" aria-pressed="false" data-side="gents">
+            <small>For our</small> Smart Gentlemen
+          </button>
+        </div>
+
+        <div class="wardrobe" id="wardrobe">
+
+          <article class="outfit" style="--i: 0" data-tilt>
+            <div class="outfit-inner">
+              <div class="outfit-face outfit-ladies">
+                <img src="../images/outfits/ladies-3.jpg" width="160" height="170" loading="lazy"
+                  alt="Silver glitter gown" />
+                <h3>Sangeet</h3>
+                <p class="outfit-theme">Glitter &amp; Glam</p>
+                <p>Glittery gown or skirt-and-top set.</p>
+              </div>
+              <div class="outfit-face outfit-gents" aria-hidden="true">
+                <img src="../images/outfits/gents-3.jpg" width="160" height="170" loading="lazy"
+                  alt="Navy party shirt with black trousers" />
+                <h3>Sangeet</h3>
+                <p class="outfit-theme">Party Wear</p>
+                <p>Party-wear shirt and pants.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="outfit" style="--i: 1" data-tilt>
+            <div class="outfit-inner">
+              <div class="outfit-face outfit-ladies">
+                <img src="../images/outfits/ladies-5.jpg" width="160" height="170" loading="lazy"
+                  alt="Pink embroidered lehenga" />
+                <h3>Varmala</h3>
+                <p class="outfit-theme">Royal &amp; Elegant</p>
+                <p>Lehenga or saree.</p>
+              </div>
+              <div class="outfit-face outfit-gents" aria-hidden="true">
+                <img src="../images/outfits/gents-5.jpg" width="160" height="170" loading="lazy"
+                  alt="Maroon Jodhpuri bandhgala with white trousers" />
+                <h3>Varmala</h3>
+                <p class="outfit-theme">Royal &amp; Elegant</p>
+                <p>Suit, bandhgala or Jodhpuri.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <p class="wardrobe-sign">We can't wait to celebrate with you!</p>
+      </section>
+
+      <section class="section section-tinted reveal" id="venue">
+        <p class="section-eyebrow">Where</p>
+        <h2>Venue</h2>
+        <div class="venue-card">
+          <h3>Queen's Land Celebration Lawn &amp; Banquet</h3>
+          <p>Nagpur, Maharashtra</p>
+          <div class="map-embed">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.0942266897073!2d79.12512547503259!3d21.068898480590526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4b9ad30cc6a53%3A0xd329767a91f4fda3!2sQueen's%20Land%20Celebration%20Lawn%20and%20Banquet%2C%20Nagpur!5e0!3m2!1sen!2sin!4v1792346264854!5m2!1sen!2sin"
+              title="Map to Queen's Land Celebration Lawn & Banquet, Nagpur"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+          </div>
+          <a
+            class="btn btn-outline"
+            href="https://www.google.com/maps/search/?api=1&amp;query=Queen%27s+Land+Celebration+Lawn+and+Banquet+Nagpur"
+            target="_blank"
+            rel="noopener"
+            >Get directions</a
+          >
+        </div>
+      </section>
+
+      <section class="section reveal" id="travel">
+        <p class="section-eyebrow">Getting here</p>
+        <h2>Travel &amp; Stay</h2>
+        <div class="info-grid">
+          <div class="info-card" data-tilt>
+            <span class="info-icon" aria-hidden="true">✈</span>
+            <h3>By air</h3>
+            <p>
+              Dr. Babasaheb Ambedkar International Airport (NAG) has direct
+              flights from most major Indian cities.
+            </p>
+          </div>
+          <div class="info-card" data-tilt>
+            <span class="info-icon" aria-hidden="true">🚆</span>
+            <h3>By train</h3>
+            <p>
+              Nagpur Junction is one of India's best-connected stations, at the
+              centre of the rail network.
+            </p>
+          </div>
+          <div class="info-card" data-tilt>
+            <span class="info-icon" aria-hidden="true">🏨</span>
+            <h3>Where to stay</h3>
+            <p>
+              Stay is available at the venue, Queen's Land. Please reach out to
+              the families (see <a href="#contact">Contact</a>) to arrange it.
+            </p>
+          </div>
+          <div class="info-card" data-tilt>
+            <span class="info-icon" aria-hidden="true">☀</span>
+            <h3>Weather</h3>
+            <p>
+              December in Nagpur is pleasant: warm days and cool evenings. Bring
+              a light shawl or jacket for the night events.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tinted reveal" id="memories">
+        <p class="section-eyebrow">Moments we treasure</p>
+        <h2>Memories</h2>
+        <p class="section-lead">Tap a photo to see it up close.</p>
+        <div class="carousel">
+          <div class="carousel-ring" style="--n: 7">
+            <button type="button" class="photo-placeholder memory" style="--i: 0" data-caption="Laughing together" data-full="../images/memories/1.jpg">
+              <img src="../images/memories/1-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="A close selfie of the two of us smiling at each other" />
+            </button>
+            <button type="button" class="photo-placeholder memory" style="--i: 1" data-caption="Evening in yellow" data-full="../images/memories/2.jpg">
+              <img src="../images/memories/2-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="The two of us sitting together, one in a mustard-yellow suit" />
+            </button>
+            <button type="button" class="photo-placeholder memory" style="--i: 2" data-caption="Mirror selfie" data-full="../images/memories/3.jpg">
+              <img src="../images/memories/3-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="A mirror selfie of the two of us, smiling, with a yellow dupatta and a dark printed kurta" />
+            </button>
+            <button type="button" class="photo-placeholder memory" style="--i: 3" data-caption="A furry friend" data-full="../images/memories/4.jpg">
+              <img src="../images/memories/4-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="Smiling with a fluffy dog on a cafe sofa" />
+            </button>
+            <button type="button" class="photo-placeholder memory" style="--i: 4" data-caption="Elegance in navy" data-full="../images/memories/5.jpg">
+              <img src="../images/memories/5-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="Standing by a window in a navy and gold saree" />
+            </button>
+            <button type="button" class="photo-placeholder memory" style="--i: 5" data-caption="Dressed up together" data-full="../images/memories/6.jpg">
+              <img src="../images/memories/6-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="The two of us in traditional outfits by a tall window" />
+            </button>
+            <button type="button" class="photo-placeholder memory" style="--i: 6" data-caption="Sitting pretty" data-full="../images/memories/7.jpg">
+              <img src="../images/memories/7-thumb.jpg" width="480" height="600" loading="lazy" decoding="async"
+                alt="Seated in a navy saree with gold motifs" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="faq">
+        <p class="section-eyebrow">Good to know</p>
+        <h2>FAQ</h2>
+        <div class="faq">
+          <details>
+            <summary>When should I arrive?</summary>
+            <p>
+              The Sangeet is on the evening of 12 December. If you're
+              travelling, we suggest arriving in Nagpur by that afternoon.
+            </p>
+          </details>
+          <details>
+            <summary>What should I wear?</summary>
+            <p>
+              Every event has its own look. See the
+              <a href="#dress-code">Dress Code</a> section for outfit ideas for
+              ladies and gentlemen.
+            </p>
+          </details>
+          <details>
+            <summary>Is there parking at the venue?</summary>
+            <p>Parking details will be shared soon.</p>
+          </details>
+          <details>
+            <summary>Who do I contact with questions?</summary>
+            <p>
+              Please call or message our families. Their numbers are in the
+              <a href="#contact">Contact</a> section.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section class="section section-tinted reveal" id="contact">
+        <p class="section-eyebrow">Get in touch</p>
+        <h2>Contact</h2>
+        <p class="section-lead">Questions about the celebrations, the stay or the way to the venue? Reach out to our families.</p>
+        <div class="info-grid contact-grid">
+          <div class="info-card" data-tilt>
+            <h3>Prabhakar Umredkar</h3>
+            <p class="contact-role">Father of the bride</p>
+            <p class="contact-number">+91 77578 85815</p>
+            <div class="contact-actions">
+              <a class="btn btn-primary" href="tel:+917757885815">Call</a>
+              <a
+                class="btn btn-whatsapp"
+                href="https://wa.me/917757885815?text=Hello%2C%20I%27m%20writing%20about%20Sweenal%20%26%20Ashay%27s%20wedding."
+                target="_blank"
+                rel="noopener"
+                >WhatsApp</a
+              >
+            </div>
+          </div>
+          <div class="info-card" data-tilt>
+            <h3>Ganesh Kohad</h3>
+            <p class="contact-role">Father of the groom</p>
+            <p class="contact-number">+91 99706 25637</p>
+            <div class="contact-actions">
+              <a class="btn btn-primary" href="tel:+919970625637">Call</a>
+              <a
+                class="btn btn-whatsapp"
+                href="https://wa.me/919970625637?text=Hello%2C%20I%27m%20writing%20about%20Sweenal%20%26%20Ashay%27s%20wedding."
+                target="_blank"
+                rel="noopener"
+                >WhatsApp</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p class="footer-names">Sweenal <span>&amp;</span> Ashay</p>
+      <p>12 &amp; 13 December 2026 · Nagpur</p>
+    </footer>
+
+    <dialog class="lightbox" id="lightbox" aria-label="Memories">
+      <button type="button" class="lightbox-close" aria-label="Close">×</button>
+      <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous photo">‹</button>
+      <figure class="lightbox-stage">
+        <div class="lightbox-media" id="lightbox-media"></div>
+        <figcaption>
+          <span id="lightbox-caption"></span>
+          <small id="lightbox-count"></small>
+        </figcaption>
+      </figure>
+      <button type="button" class="lightbox-nav lightbox-next" aria-label="Next photo">›</button>
+    </dialog>
+
+    <audio id="music" src="../audio/music.m4a" preload="none"></audio>
+    <button type="button" class="music-toggle" id="music-toggle" aria-pressed="false" aria-label="Play music">
+      <span aria-hidden="true">&#9834;</span>
+    </button>
+
+    <script src="../js/main.js"></script>
+  </body>
+</html>

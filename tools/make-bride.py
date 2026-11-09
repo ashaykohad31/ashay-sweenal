@@ -3,6 +3,7 @@
 
   /bride/         = index.html with Sweenal's name first
   /bride-events/  = events/index.html with Sweenal first and without the Reception (that is the groom's side)
+  /bride-sangeet/ = /bride-events/ cut down to the Sangeet and the evening Varmala & Wedding only
 
 Run it from the project folder after changing index.html or events/index.html:  python3 tools/make-bride.py
 The two output pages are generated files: change the main pages, then run this again.
@@ -103,4 +104,34 @@ for old, new in [
 assert "Reception" not in ev and "Wardha" not in ev and "groom/" not in ev
 (ROOT / "bride-events").mkdir(exist_ok=True)
 (ROOT / "bride-events" / "index.html").write_text(ev)
-print("made bride/index.html and bride-events/index.html")
+
+# /bride-sangeet/ from /bride-events/: only the Sangeet and the evening Varmala & Wedding
+sg = ev
+for pat, what in [
+    (r'\s*<article class="event-card event-haldi" data-tilt>.*?</article>', "Haldi card"),
+    (r'\s*<article class="event-card event-vidhi" data-tilt>.*?</article>', "Vidhi card"),
+    (r'\s*<article class="outfit" style="--i: 0" data-tilt>.*?</article>', "Mehendi outfit"),
+    (r'\s*<article class="outfit" style="--i: 1" data-tilt>.*?</article>', "Carnival outfit"),
+    (r'\s*<article class="outfit" style="--i: 3" data-tilt>.*?</article>', "Vaidik outfit"),
+]:
+    sg, n = re.subn(pat, "", sg, count=1, flags=re.S)
+    assert n == 1, what + " not found"
+sg = sg.replace('style="--i: 2" data-tilt', 'style="--i: 0" data-tilt').replace('style="--i: 4" data-tilt', 'style="--i: 1" data-tilt')
+for old, new in [
+    ("12–13 December 2026 · Haldi, Sangeet, Vidhi &amp; Wedding · Nagpur",
+     "12–13 December 2026 · Sangeet &amp; Wedding · Nagpur"),
+    ("12 to 13 December 2026: Haldi, Sangeet, Vidhi and Wedding, in Nagpur",
+     "12 to 13 December 2026: Sangeet and Wedding, in Nagpur"),
+    ('data-target="2026-12-12T12:30:00+05:30"', 'data-target="2026-12-12T18:30:00+05:30"'),
+    (f'content="{SITE}/bride-events/"', f'content="{SITE}/bride-sangeet/"'),
+    (f'href="{SITE}/bride-events/"', f'href="{SITE}/bride-sangeet/"'),
+    ("Festivities begin on the morning of 12 December. If you're\n              travelling, we suggest arriving in Nagpur by the evening of 11\n              December.",
+     "The Sangeet is on the evening of 12 December. If you're\n              travelling, we suggest arriving in Nagpur by that afternoon."),
+]:
+    assert old in sg, old
+    sg = sg.replace(old, new)
+for gone in ["Haldi", "Vidhi", "Mehendi", "Carnival", "Vaidik"]:
+    assert gone not in sg, gone
+(ROOT / "bride-sangeet").mkdir(exist_ok=True)
+(ROOT / "bride-sangeet" / "index.html").write_text(sg)
+print("made bride/index.html, bride-events/index.html and bride-sangeet/index.html")
